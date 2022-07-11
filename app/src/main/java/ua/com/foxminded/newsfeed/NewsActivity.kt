@@ -7,16 +7,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import ua.com.foxminded.newsfeed.databinding.ActivityMainBinding
+import ua.com.foxminded.newsfeed.databinding.ActivityNewsBinding
+import ua.com.foxminded.newsfeed.di.DaggerAppComponent
+import ua.com.foxminded.newsfeed.ui.news_list.NewsListContract
 
-class MainActivity : AppCompatActivity() {
+class NewsActivity : AppCompatActivity(), NewsListContract.Host {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.component = DaggerAppComponent.create()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView

@@ -5,4 +5,15 @@
     <string name="title_news_list">All</string>
     <string name="title_groups">Groups</string>
     <string name="title_saved_news">Saved</string>
+
+    <!--NewsListFragment-->
+    <string name="all_feeds">All feeds</string>
+
+    <!--NewsList RecyclerView item-->
+    <string name="news_item_date_icon_desc">date of publication</string>
+    <string name="news_item_image_desc">image provided by source</string>
+
+    <!--Toasts-->
+    <string name="failed_to_load_news">Failed to load news</string>
+    <string name="demo_string">NICE!</string>
 </resources>
