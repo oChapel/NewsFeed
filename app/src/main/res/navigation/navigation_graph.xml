@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/newsListFragment">
+
+    <fragment
+        android:id="@+id/newsListFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.news_list.NewsListFragment"
+        android:label="@string/label_news_list_fragment"
+        tools:layout="@layout/fragment_news_list" >
+        <action
+            android:id="@+id/action_newsListFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.groups.GroupsFragment"
+        android:label="@string/label_groups_fragment"
+        tools:layout="@layout/fragment_groups" />
+
+    <fragment
+        android:id="@+id/savedNewsFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.saved_news.SavedNewsFragment"
+        android:label="@string/label_saved_news_fragment"
+        tools:layout="@layout/fragment_saved_news" >
+        <action
+            android:id="@+id/action_savedNewsFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.article.ArticleFragment"
+        android:label="@string/label_article_fragment"
+        tools:layout="@layout/fragment_article" >
+        <argument
+            android:name="article"
+            app:argType="ua.com.foxminded.newsfeed.data.model.Item" />
+    </fragment>
+</navigation>

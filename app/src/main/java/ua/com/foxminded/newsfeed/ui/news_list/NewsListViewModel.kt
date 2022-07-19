@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.NewsRepository
+import ua.com.foxminded.newsfeed.data.model.Item
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenState
@@ -29,7 +30,7 @@ NewsListContract.ViewModel {
                 newsFlow
                     .onEach { setState(NewsListScreenState.Loading()) }
                     .flowOn(Dispatchers.Main)
-                    .map { repository.getNytNews() }
+                    .map { repository.loadAllNews() }
                     .flowOn(Dispatchers.IO)
                     .catch { error ->
                         error.printStackTrace()
@@ -37,8 +38,13 @@ NewsListContract.ViewModel {
                     }
                     .collect{ result ->
                         if (result.isSuccessful) {
-                            setState(NewsListScreenState.LoadNews((result as Result.Success).data.items))
+                            val list = ArrayList<Item>()
+                            for (response in (result as Result.Success).data) {
+                                list.addAll(response.items)
+                            }
+                            setState(NewsListScreenState.LoadNews(list))
                         } else {
+                            (result as Result.Error).error?.printStackTrace()
                             setEffect(NewsListScreenEffect.ShowToast(R.string.failed_to_load_news))
                         }
                     }
@@ -46,8 +52,12 @@ NewsListContract.ViewModel {
         }
     }
 
-    override fun reload() {
-        newsFlow.tryEmit(0)
+    override fun loadNews() {
+        if (newsFlow.value == 0) {
+            newsFlow.tryEmit(1)
+        } else {
+            newsFlow.tryEmit(0)
+        }
     }
 
     override fun onCleared() {

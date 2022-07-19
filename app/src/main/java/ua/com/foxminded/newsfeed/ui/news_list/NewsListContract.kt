@@ -8,11 +8,11 @@ import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenState
 class NewsListContract {
 
     interface ViewModel : FragmentContract.ViewModel<NewsListScreenState, NewsListScreenEffect> {
-        fun reload()
+        fun loadNews()
     }
 
     interface View : FragmentContract.View {
-        fun setProgressVisibility(isVisible: Boolean)
+        fun setProgress(isVisible: Boolean)
         fun showNews(list: List<Item>)
         fun showToast(stringId: Int)
     }

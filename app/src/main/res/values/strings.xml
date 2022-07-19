@@ -1,19 +1,24 @@
 <resources>
     <string name="app_name">News Feed</string>
 
-    <!--Bottom nav titles-->
-    <string name="title_news_list">All</string>
+    <!-- Bottom nav titles / Nav Fragments labels -->
+    <string name="title_news_list">All feeds</string>
     <string name="title_groups">Groups</string>
     <string name="title_saved_news">Saved</string>
 
-    <!--NewsListFragment-->
-    <string name="all_feeds">All feeds</string>
+    <!-- Nav Fragments labels -->
+    <string name="label_news_list_fragment">NewsListFragment</string>
+    <string name="label_groups_fragment">GroupsFragment</string>
+    <string name="label_saved_news_fragment">SavedNewsFragment</string>
+    <string name="label_article_fragment">ArticleFragment</string>
 
-    <!--NewsList RecyclerView item-->
+    <!-- NewsList RecyclerView item -->
+    <string name="source_name_nyt">The New York Times</string>
+    <string name="source_name_cnn">CNN</string>
+    <string name="source_name_wired">WIRED</string>
     <string name="news_item_date_icon_desc">date of publication</string>
     <string name="news_item_image_desc">image provided by source</string>
 
-    <!--Toasts-->
+    <!-- Toasts -->
     <string name="failed_to_load_news">Failed to load news</string>
-    <string name="demo_string">NICE!</string>
 </resources>

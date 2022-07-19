@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nyt_news_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nyt_news_guide_line_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nyt_news_guide_line_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:layout_constraintGuide_percent="0.95" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/nyt_news_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/news_item_image_desc"
+            card_view:layout_constraintBottom_toTopOf="@id/nyt_title_section_barrier"
+            card_view:layout_constraintDimensionRatio="1:1"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:shapeAppearanceOverlay="@style/roundedImageView" />
+
+        <TextView
+            android:id="@+id/nyt_news_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/black"
+            card_view:layout_constrainedWidth="true"
+            card_view:layout_constraintBottom_toTopOf="@id/nyt_title_section_barrier"
+            card_view:layout_constraintEnd_toStartOf="@id/nyt_news_image"
+            card_view:layout_constraintHorizontal_bias="0.0"
+            card_view:layout_constraintStart_toEndOf="@id/nyt_news_guide_line_start"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_goneMarginEnd="8dp"
+            tools:text="Title" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/nyt_title_section_barrier"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            card_view:barrierDirection="bottom"
+            card_view:constraint_referenced_ids="nyt_news_image, nyt_news_title" />
+
+        <TextView
+            android:id="@+id/nyt_news_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="15sp"
+            card_view:layout_constrainedWidth="true"
+            card_view:layout_constraintBottom_toTopOf="@id/nyt_news_source"
+            card_view:layout_constraintEnd_toStartOf="@id/nyt_news_guide_line_end"
+            card_view:layout_constraintHorizontal_bias="0"
+            card_view:layout_constraintStart_toEndOf="@id/nyt_news_guide_line_start"
+            card_view:layout_constraintTop_toBottomOf="@id/nyt_title_section_barrier"
+            tools:text="Description" />
+
+        <TextView
+            android:id="@+id/nyt_news_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/source_name_nyt"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/nyt_news_timespan"
+            card_view:layout_constraintHorizontal_chainStyle="spread_inside"
+            card_view:layout_constraintStart_toEndOf="@id/nyt_news_guide_line_start"
+            card_view:layout_constraintTop_toBottomOf="@id/nyt_news_description" />
+
+        <TextView
+            android:id="@+id/nyt_news_timespan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            card_view:layout_constraintBaseline_toBaselineOf="@id/nyt_news_source"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/nyt_news_guide_line_end"
+            card_view:layout_constraintStart_toEndOf="@id/nyt_news_source"
+            card_view:layout_constraintTop_toBottomOf="@id/nyt_news_description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

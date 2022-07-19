@@ -2,6 +2,7 @@ package ua.com.foxminded.newsfeed.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "articles")
 data class Item(
@@ -17,4 +18,4 @@ data class Item(
     val pubDate: String,
     val thumbnail: String,
     val title: String
-)
+) : Serializable

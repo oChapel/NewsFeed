@@ -8,7 +8,7 @@ sealed class NewsListScreenEffect : AbstractEffect<NewsListContract.View>() {
     class ShowToast(private val stringId: Int) : NewsListScreenEffect() {
 
         override fun handle(screen: NewsListContract.View) {
-            screen.setProgressVisibility(false)
+            screen.setProgress(false)
             screen.showToast(stringId)
         }
     }

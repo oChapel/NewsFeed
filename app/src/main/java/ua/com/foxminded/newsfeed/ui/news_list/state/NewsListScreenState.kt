@@ -10,7 +10,7 @@ open class NewsListScreenState protected constructor(
 ) : AbstractState<NewsListContract.View, NewsListScreenState>() {
 
     override fun visit(screen: NewsListContract.View) {
-        screen.setProgressVisibility(isProgressVisible)
+        screen.setProgress(isProgressVisible)
         screen.showNews(list)
     }
 

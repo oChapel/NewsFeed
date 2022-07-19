@@ -6,6 +6,16 @@ import ua.com.foxminded.newsfeed.util.Result
 
 class DefaultNewsNetwork(private val newsFeedApi: NewsFeedApi) : NewsNetwork {
 
+    private val list = ArrayList<NewsResponse>()
+
+    override suspend fun getAllNews(): Result<List<NewsResponse>> {
+        list.clear()
+        handle(newsFeedApi.getNytNews())?.let { return Result.Error(Throwable(it)) }
+        handle(newsFeedApi.getWiredNews())?.let { return Result.Error(Throwable(it)) }
+        handle(newsFeedApi.getCnnNews())?.let { return Result.Error(Throwable(it)) }
+        return Result.Success(list)
+    }
+
     override suspend fun getNytNews(): Result<NewsResponse> {
         return handleRetrofitResponse(newsFeedApi.getNytNews())
     }
@@ -14,8 +24,8 @@ class DefaultNewsNetwork(private val newsFeedApi: NewsFeedApi) : NewsNetwork {
         return handleRetrofitResponse(newsFeedApi.getCnnNews())
     }
 
-    override suspend fun getFinancialTimesNews(): Result<NewsResponse> {
-        return handleRetrofitResponse(newsFeedApi.getFinancialTimesNews())
+    override suspend fun getWiredNews(): Result<NewsResponse> {
+        return handleRetrofitResponse(newsFeedApi.getWiredNews())
     }
 
     private fun handleRetrofitResponse(response: Response<NewsResponse>): Result<NewsResponse> {
@@ -27,5 +37,16 @@ class DefaultNewsNetwork(private val newsFeedApi: NewsFeedApi) : NewsNetwork {
         return Result.Error(
             Throwable("Status code: ${response.code()}. ${response.message()}")
         )
+    }
+
+    private fun handle(response: Response<NewsResponse>): String? {
+        return if (response.isSuccessful) {
+            response.body()?.let {
+                list.add(it)
+                return null
+            }
+        } else {
+            ("Status code: ${response.code()}. ${response.message()}")
+        }
     }
 }
