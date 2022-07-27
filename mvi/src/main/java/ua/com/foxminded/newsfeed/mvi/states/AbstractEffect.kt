@@ -5,7 +5,7 @@ abstract class AbstractEffect<T> : ScreenEffect<T> {
     private var isHandled = false
 
     override fun visit(screen: T) {
-        if (isHandled) {
+        if (!isHandled) {
             handle(screen)
             isHandled = true
         }

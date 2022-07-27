@@ -1,6 +1,7 @@
 package ua.com.foxminded.newsfeed.data.dao
 
 import android.app.Application
+import kotlinx.coroutines.flow.Flow
 import ua.com.foxminded.newsfeed.data.model.Item
 
 class RoomNewsDao(application: Application) : NewsDao {
@@ -16,8 +17,17 @@ class RoomNewsDao(application: Application) : NewsDao {
         articleDao.insertArticle(article)
     }
 
-    override suspend fun getAllArticles(): List<Item> {
+    override fun getAllArticles(): Flow<List<Item>> {
         return articleDao.getAllArticles()
+    }
+
+    override suspend fun existsInDb(title: String): Boolean {
+        return articleDao.existsInDb(title)
+    }
+
+    //TODO
+    override suspend fun deleteArticleByTitle(title: String) {
+        articleDao.deleteArticleByTitle(title)
     }
 
     override suspend fun deleteArticle(article: Item) {

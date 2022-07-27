@@ -6,7 +6,7 @@ import ua.com.foxminded.newsfeed.data.model.Enclosure
 class RoomTypeConverters {
 
     @TypeConverter
-    fun fromEnclosure(enclosure: Enclosure): String? {
+    fun fromEnclosure(enclosure: Enclosure): String {
         return enclosure.link
     }
 

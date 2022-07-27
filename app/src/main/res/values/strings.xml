@@ -1,16 +1,24 @@
 <resources>
     <string name="app_name">News Feed</string>
 
-    <!-- Bottom nav titles / Nav Fragments labels -->
+    <!-- Bottom nav titles -->
     <string name="title_news_list">All feeds</string>
     <string name="title_groups">Groups</string>
     <string name="title_saved_news">Saved</string>
 
     <!-- Nav Fragments labels -->
-    <string name="label_news_list_fragment">NewsListFragment</string>
-    <string name="label_groups_fragment">GroupsFragment</string>
-    <string name="label_saved_news_fragment">SavedNewsFragment</string>
+    <string name="label_news_list_fragment">Latest News</string>
+    <string name="label_groups_fragment">Groups</string>
+    <string name="label_saved_news_fragment">Saved News</string>
     <string name="label_article_fragment">ArticleFragment</string>
+
+    <!-- NewsListFragment -->
+    <string name="menu_item_string_refresh">Refresh</string>
+
+    <!-- SavedNewsFragment -->
+    <string name="saved_news_empty_screen_desc">empty screen image</string>
+    <string name="saved_news_empty_screen_text_header">You have no saved news yet.</string>
+    <string name="saved_news_empty_screen_text_body">To save article, navigate to all feeds \n and press bookmark icon</string>
 
     <!-- NewsList RecyclerView item -->
     <string name="source_name_nyt">The New York Times</string>
@@ -18,7 +26,14 @@
     <string name="source_name_wired">WIRED</string>
     <string name="news_item_date_icon_desc">date of publication</string>
     <string name="news_item_image_desc">image provided by source</string>
+    <string name="news_item_bookmark_desc">image to save article</string>
 
     <!-- Toasts -->
     <string name="failed_to_load_news">Failed to load news</string>
+    <string name="failed_to_connect_with_db">Some error occurred while processing your request</string>
+
+    <!-- SnackBars -->
+    <string name="article_saved">Saved successfully</string>
+    <string name="article_deleted">Article successfully deleted</string>
+    <string name="undo">Undo</string>
 </resources>

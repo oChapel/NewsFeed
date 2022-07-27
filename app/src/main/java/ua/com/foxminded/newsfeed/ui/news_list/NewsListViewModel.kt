@@ -18,9 +18,10 @@ class NewsListViewModel(private val repository: NewsRepository) : MviViewModel<
         NewsListContract.View,
         NewsListScreenState,
         NewsListScreenEffect>(),
-NewsListContract.ViewModel {
+    NewsListContract.ViewModel {
 
     private val newsFlow = MutableStateFlow(0)
+    private val articleFlow = MutableSharedFlow<Item>(extraBufferCapacity = 1)
     private var launch: Job? = null
 
     override fun onStateChanged(event: Lifecycle.Event) {
@@ -36,17 +37,45 @@ NewsListContract.ViewModel {
                         error.printStackTrace()
                         setEffect(NewsListScreenEffect.ShowToast(R.string.failed_to_load_news))
                     }
-                    .collect{ result ->
+                    .collect { result ->
                         if (result.isSuccessful) {
                             val list = ArrayList<Item>()
                             for (response in (result as Result.Success).data) {
                                 list.addAll(response.items)
                             }
                             setState(NewsListScreenState.LoadNews(list))
+                            for (article in list) {
+                                if (repository.existsInDb(article.title)) {
+                                    setEffect(NewsListScreenEffect.ItemChanged(article, true))
+                                }
+                            }
                         } else {
                             (result as Result.Error).error?.printStackTrace()
                             setEffect(NewsListScreenEffect.ShowToast(R.string.failed_to_load_news))
                         }
+                    }
+            }
+
+            viewModelScope.launch {
+                articleFlow
+                    .map { article -> Pair(article, repository.existsInDb(article.title)) }
+                    .onEach { pair ->
+                        when (pair.second) {
+                            true -> repository.deleteArticleByTitle(pair.first.title) //TODO
+                            false -> repository.saveArticle(pair.first)
+                        }
+                    }
+                    .flowOn(Dispatchers.IO)
+                    .catch { error ->
+                        error.printStackTrace()
+                        setEffect(
+                            NewsListScreenEffect.ShowToast(R.string.failed_to_connect_with_db)
+                        )
+                    }
+                    .collect { pair ->
+                        setEffect(
+                            NewsListScreenEffect.ItemChanged(pair.first, !pair.second)
+                        )
                     }
             }
         }
@@ -58,6 +87,10 @@ NewsListContract.ViewModel {
         } else {
             newsFlow.tryEmit(0)
         }
+    }
+
+    override fun onBookmarkClicked(article: Item) {
+        articleFlow.tryEmit(article)
     }
 
     override fun onCleared() {

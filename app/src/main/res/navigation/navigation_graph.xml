@@ -34,7 +34,6 @@
     <fragment
         android:id="@+id/articleFragment"
         android:name="ua.com.foxminded.newsfeed.ui.article.ArticleFragment"
-        android:label="@string/label_article_fragment"
         tools:layout="@layout/fragment_article" >
         <argument
             android:name="article"

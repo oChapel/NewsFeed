@@ -1,5 +1,6 @@
 package ua.com.foxminded.newsfeed.data
 
+import kotlinx.coroutines.flow.Flow
 import ua.com.foxminded.newsfeed.data.model.Item
 import ua.com.foxminded.newsfeed.data.model.NewsResponse
 import ua.com.foxminded.newsfeed.util.Result
@@ -16,7 +17,12 @@ interface NewsRepository {
 
     suspend fun saveArticle(article: Item)
 
-    suspend fun getAllArticlesFromDb(): List<Item>
+    fun getAllArticlesFromDb(): Flow<List<Item>>
+
+    suspend fun existsInDb(title: String): Boolean
+
+    //TODO
+    suspend fun deleteArticleByTitle(title: String)
 
     suspend fun deleteArticle(article: Item)
 }

@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.news_list.adapter
+package ua.com.foxminded.newsfeed.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import ua.com.foxminded.newsfeed.data.model.Item

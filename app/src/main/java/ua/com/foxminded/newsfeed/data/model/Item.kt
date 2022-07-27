@@ -1,6 +1,7 @@
 package ua.com.foxminded.newsfeed.data.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.Serializable
 

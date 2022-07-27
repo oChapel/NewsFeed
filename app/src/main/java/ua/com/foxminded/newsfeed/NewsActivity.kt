@@ -1,6 +1,7 @@
 package ua.com.foxminded.newsfeed
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -22,6 +23,8 @@ class NewsActivity : AppCompatActivity(), NewsListContract.Host {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+
         val navView: BottomNavigationView = binding.bottomNavView
         val navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
         // Passing each menu ID as a set of Ids because each
@@ -33,5 +36,15 @@ class NewsActivity : AppCompatActivity(), NewsListContract.Host {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

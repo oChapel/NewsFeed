@@ -1,10 +1,11 @@
 package ua.com.foxminded.newsfeed.ui.news_list
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +15,10 @@ import ua.com.foxminded.newsfeed.data.model.Item
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
-import ua.com.foxminded.newsfeed.ui.news_list.adapter.NewsListAdapter
+import ua.com.foxminded.newsfeed.ui.adapter.NewsRecyclerAdapter
 import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenState
+import ua.com.foxminded.newsfeed.util.Constants
 
 class NewsListFragment : HostedFragment<
         NewsListContract.View,
@@ -27,10 +29,15 @@ class NewsListFragment : HostedFragment<
     NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private var binding: FragmentNewsListBinding? = null
-    private val newsListAdapter = NewsListAdapter()
+    private val newsAdapter = NewsRecyclerAdapter()
 
     override fun createModel(): NewsListContract.ViewModel {
         return ViewModelProvider(this, NewsViewModelFactory())[NewsListViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -42,23 +49,27 @@ class NewsListFragment : HostedFragment<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.news_list_options_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.option_menu_item_refresh -> {
+                        model?.loadNews()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         binding?.newsListRecyclerView?.apply {
-            adapter = newsListAdapter
+            adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-
-        newsListAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable(KEY_STRING_ARTICLE, it)
-            }
-            findNavController().navigate(
-                R.id.action_newsListFragment_to_articleFragment,
-                bundle
-            )
-        }
-
-        binding?.newsSwipeRefresh?.setOnRefreshListener(this)
+        setListeners()
     }
 
     override fun setProgress(isVisible: Boolean) {
@@ -68,23 +79,42 @@ class NewsListFragment : HostedFragment<
     }
 
     override fun showNews(list: List<Item>) {
-        newsListAdapter.setNews(list)
+        newsAdapter.setNews(list)
+        (binding?.newsListRecyclerView?.layoutManager as LinearLayoutManager)
+            .scrollToPositionWithOffset(0, 0)
     }
 
     override fun showToast(stringId: Int) {
         Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()
     }
 
+    override fun onItemChanged(article: Item, isArticleInDb: Boolean) {
+        newsAdapter.notifyItemChanged(newsAdapter.newsList.indexOf(article), isArticleInDb)
+    }
+
     override fun onRefresh() {
         model?.loadNews()
+    }
+
+    private fun setListeners() {
+        newsAdapter.setOnItemClickListener {
+            findNavController().navigate(
+                R.id.action_newsListFragment_to_articleFragment,
+                Bundle().apply {
+                    putSerializable(Constants.KEY_STRING_ARTICLE, it)
+                }
+            )
+        }
+
+        newsAdapter.setOnBookmarkClickListener {
+            model?.onBookmarkClicked(it)
+        }
+
+        binding?.newsSwipeRefresh?.setOnRefreshListener(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    companion object {
-        private const val KEY_STRING_ARTICLE = "article"
     }
 }

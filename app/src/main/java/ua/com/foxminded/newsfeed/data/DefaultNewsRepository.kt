@@ -1,5 +1,6 @@
 package ua.com.foxminded.newsfeed.data
 
+import kotlinx.coroutines.flow.Flow
 import ua.com.foxminded.newsfeed.data.dao.NewsDao
 import ua.com.foxminded.newsfeed.data.model.Item
 import ua.com.foxminded.newsfeed.data.model.NewsResponse
@@ -31,8 +32,17 @@ class DefaultNewsRepository(
         localDataSource.insertArticle(article)
     }
 
-    override suspend fun getAllArticlesFromDb(): List<Item> {
+    override fun getAllArticlesFromDb(): Flow<List<Item>> {
         return localDataSource.getAllArticles()
+    }
+
+    override suspend fun existsInDb(title: String): Boolean {
+        return localDataSource.existsInDb(title)
+    }
+
+    //TODO
+    override suspend fun deleteArticleByTitle(title: String) {
+        localDataSource.deleteArticleByTitle(title)
     }
 
     override suspend fun deleteArticle(article: Item) {

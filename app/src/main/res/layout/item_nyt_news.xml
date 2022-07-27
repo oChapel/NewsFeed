@@ -86,7 +86,6 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@id/nyt_news_timespan"
             card_view:layout_constraintHorizontal_chainStyle="spread_inside"
             card_view:layout_constraintStart_toEndOf="@id/nyt_news_guide_line_start"
             card_view:layout_constraintTop_toBottomOf="@id/nyt_news_description" />
@@ -95,12 +94,23 @@
             android:id="@+id/nyt_news_timespan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:textColor="@color/black"
             android:textStyle="bold"
             card_view:layout_constraintBaseline_toBaselineOf="@id/nyt_news_source"
             card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/nyt_news_bookmark"
+            card_view:layout_constraintTop_toBottomOf="@id/nyt_news_description"
+            tools:text="0 hours ago" />
+
+        <ImageView
+            android:id="@+id/nyt_news_bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/news_item_bookmark_desc"
+            android:src="@drawable/ic_bookmark"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toStartOf="@id/nyt_news_guide_line_end"
-            card_view:layout_constraintStart_toEndOf="@id/nyt_news_source"
             card_view:layout_constraintTop_toBottomOf="@id/nyt_news_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,19 @@
 package ua.com.foxminded.newsfeed.util
 
+import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
-object Util {
+object Utils {
 
-    private val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US) //TODO
-
+    @SuppressLint("SimpleDateFormat")
     fun getTimeSpanString(dateStr: String?): String {
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").apply {
+            timeZone = TimeZone.getTimeZone("GMT")
+        }
         dateStr?.let {
-            inputFormat.parse(dateStr)?.let {
+            format.parse(dateStr)?.let {
                 return DateUtils.getRelativeTimeSpanString(
                     it.time,
                     Calendar.getInstance().timeInMillis,

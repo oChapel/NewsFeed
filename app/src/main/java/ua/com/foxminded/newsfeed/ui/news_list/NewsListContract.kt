@@ -9,12 +9,14 @@ class NewsListContract {
 
     interface ViewModel : FragmentContract.ViewModel<NewsListScreenState, NewsListScreenEffect> {
         fun loadNews()
+        fun onBookmarkClicked(article: Item)
     }
 
     interface View : FragmentContract.View {
         fun setProgress(isVisible: Boolean)
         fun showNews(list: List<Item>)
         fun showToast(stringId: Int)
+        fun onItemChanged(article: Item, isArticleInDb: Boolean)
     }
 
     interface Host : FragmentContract.Host
