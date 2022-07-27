@@ -26,6 +26,11 @@ class SavedNewsViewModel(private val repository: NewsRepository) : MviViewModel<
         if (event == Lifecycle.Event.ON_CREATE && launch == null) {
             launch = viewModelScope.launch {
                 repository.getAllArticlesFromDb()
+                    .onEach { list ->
+                        for (article in list) {
+                            article.isSaved = true
+                        }
+                    }
                     .collect { list ->
                         if (list.isEmpty()) {
                             setState(SavedNewsScreenState.ShowEmptyScreen)

@@ -41,14 +41,14 @@ class NewsListViewModel(private val repository: NewsRepository) : MviViewModel<
                         if (result.isSuccessful) {
                             val list = ArrayList<Item>()
                             for (response in (result as Result.Success).data) {
+                                for (article in response.items) {
+                                    if (repository.existsInDb(article.title)) {
+                                        article.isSaved = true
+                                    }
+                                }
                                 list.addAll(response.items)
                             }
                             setState(NewsListScreenState.LoadNews(list))
-                            for (article in list) {
-                                if (repository.existsInDb(article.title)) {
-                                    setEffect(NewsListScreenEffect.ItemChanged(article, true))
-                                }
-                            }
                         } else {
                             (result as Result.Error).error?.printStackTrace()
                             setEffect(NewsListScreenEffect.ShowToast(R.string.failed_to_load_news))
@@ -61,8 +61,14 @@ class NewsListViewModel(private val repository: NewsRepository) : MviViewModel<
                     .map { article -> Pair(article, repository.existsInDb(article.title)) }
                     .onEach { pair ->
                         when (pair.second) {
-                            true -> repository.deleteArticleByTitle(pair.first.title)
-                            false -> repository.saveArticle(pair.first)
+                            true -> {
+                                repository.deleteArticleByTitle(pair.first.title)
+                                pair.first.isSaved = false
+                            }
+                            false -> {
+                                repository.saveArticle(pair.first)
+                                pair.first.isSaved = true
+                            }
                         }
                     }
                     .flowOn(Dispatchers.IO)

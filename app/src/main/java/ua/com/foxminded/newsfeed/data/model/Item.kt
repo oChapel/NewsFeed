@@ -19,4 +19,7 @@ data class Item(
     val pubDate: String,
     val thumbnail: String,
     val title: String
-) : Serializable
+) : Serializable {
+    @Ignore
+    var isSaved: Boolean = false
+}

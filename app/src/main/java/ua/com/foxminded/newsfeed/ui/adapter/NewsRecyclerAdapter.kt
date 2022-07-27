@@ -115,6 +115,12 @@ class NewsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.nytNewsDescription.text = article.description
             binding.nytNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
 
+            if (article.isSaved) {
+                binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
+            } else {
+                binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark)
+            }
+
             binding.nytNewsRootView.setOnClickListener {
                 onItemCLickListener?.let { it(article) }
             }
@@ -145,6 +151,12 @@ class NewsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.cnnNewsDescription.text = article.description
             binding.cnnNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
 
+            if (article.isSaved) {
+                binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
+            } else {
+                binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark)
+            }
+
             binding.cnnNewsRootView.setOnClickListener {
                 onItemCLickListener?.let { it(article) }
             }
@@ -172,6 +184,12 @@ class NewsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.wiredNewsTitle.text = article.title
             binding.wiredNewsDescription.text = article.description
             binding.wiredNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
+
+            if (article.isSaved) {
+                binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
+            } else {
+                binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark)
+            }
 
             binding.wiredNewsRootView.setOnClickListener {
                 onItemCLickListener?.let { it(article) }
