@@ -1,9 +1,9 @@
-package ua.com.foxminded.newsfeed.ui.news_list
+package ua.com.foxminded.newsfeed.ui.articles.news
 
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.mvi.fragments.FragmentContract
-import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenEffect
-import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenState
+import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
+import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
 
 class NewsListContract {
 

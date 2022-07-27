@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.adapter
+package ua.com.foxminded.newsfeed.ui.articles.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.databinding.ItemCnnNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemNytNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
@@ -44,23 +44,17 @@ class NewsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (viewType) {
             NYT_ARTICLE -> NytNewsHolder(
                 ItemNytNewsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+                    LayoutInflater.from(parent.context), parent, false
                 )
             )
             CNN_ARTICLE -> CnnNewsHolder(
                 ItemCnnNewsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+                    LayoutInflater.from(parent.context), parent, false
                 )
             )
             else -> WiredNewsHolder(
                 ItemWiredNewsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+                    LayoutInflater.from(parent.context), parent, false
                 )
             )
         }
@@ -103,8 +97,10 @@ class NewsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    inner class NytNewsHolder(private val binding: ItemNytNewsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class NytNewsHolder(
+        private val binding: ItemNytNewsBinding
+        ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(article: Item) {
             if (article.enclosure.link != Constants.EMPTY_STRING) {
                 Picasso.get().load(article.enclosure.link).into(binding.nytNewsImage)

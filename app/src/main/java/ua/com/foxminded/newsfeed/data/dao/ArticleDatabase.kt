@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ua.com.foxminded.newsfeed.data.dao.util.RoomTypeConverters
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 
 @Database(entities = [Item::class], version = 1, exportSchema = false)
 @TypeConverters(RoomTypeConverters::class)

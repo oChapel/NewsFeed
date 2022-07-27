@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.article
+package ua.com.foxminded.newsfeed.ui.articles.article
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.news_list
+package ua.com.foxminded.newsfeed.ui.articles.news
 
 import android.os.Bundle
 import android.view.*
@@ -11,13 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
-import ua.com.foxminded.newsfeed.ui.adapter.NewsRecyclerAdapter
-import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenEffect
-import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenState
+import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter
+import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
+import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
 import ua.com.foxminded.newsfeed.util.Constants
 
 class NewsListFragment : HostedFragment<

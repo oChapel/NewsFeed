@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.news_list
+package ua.com.foxminded.newsfeed.ui.articles.news
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
-import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenEffect
-import ua.com.foxminded.newsfeed.ui.news_list.state.NewsListScreenState
+import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
+import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
 import ua.com.foxminded.newsfeed.util.Result
 
 class NewsListViewModel(private val repository: NewsRepository) : MviViewModel<

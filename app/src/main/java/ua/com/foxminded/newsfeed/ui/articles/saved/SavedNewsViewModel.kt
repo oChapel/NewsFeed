@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.saved_news
+package ua.com.foxminded.newsfeed.ui.articles.saved
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
-import ua.com.foxminded.newsfeed.ui.saved_news.state.SavedNewsScreenEffect
-import ua.com.foxminded.newsfeed.ui.saved_news.state.SavedNewsScreenState
+import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
+import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenState
 
 class SavedNewsViewModel(private val repository: NewsRepository) : MviViewModel<
         SavedNewsContract.View,
@@ -58,9 +58,7 @@ class SavedNewsViewModel(private val repository: NewsRepository) : MviViewModel<
                     }
                     .collect { pair ->
                         if (pair.second) {
-                            setEffect(
-                                SavedNewsScreenEffect.ShowUndoSnackBar(pair.first)
-                            )
+                            setEffect(SavedNewsScreenEffect.ShowUndoSnackBar(pair.first))
                         }
                     }
             }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/newsListFragment"
-        android:name="ua.com.foxminded.newsfeed.ui.news_list.NewsListFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.articles.news.NewsListFragment"
         android:label="@string/label_news_list_fragment"
         tools:layout="@layout/fragment_news_list" >
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/savedNewsFragment"
-        android:name="ua.com.foxminded.newsfeed.ui.saved_news.SavedNewsFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsFragment"
         android:label="@string/label_saved_news_fragment"
         tools:layout="@layout/fragment_saved_news" >
         <action
@@ -33,10 +33,11 @@
 
     <fragment
         android:id="@+id/articleFragment"
-        android:name="ua.com.foxminded.newsfeed.ui.article.ArticleFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.articles.article.ArticleFragment"
         tools:layout="@layout/fragment_article" >
         <argument
             android:name="article"
             app:argType="ua.com.foxminded.newsfeed.data.model.Item" />
     </fragment>
+
 </navigation>

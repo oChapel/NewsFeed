@@ -43,8 +43,7 @@ abstract class HostedFragment<
             val hostClassName = ((javaClass.genericSuperclass as ParameterizedType)
                 .actualTypeArguments[1] as Class<*>).canonicalName
             throw RuntimeException(
-                "Activity must implement $hostClassName to attach ${this.javaClass.simpleName}",
-                e
+                "Activity must implement $hostClassName to attach ${this.javaClass.simpleName}", e
             )
         }
     }

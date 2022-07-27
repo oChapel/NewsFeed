@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.data.model
+package ua.com.foxminded.newsfeed.data.dto
 
 data class NewsResponse(
     val feed: Feed,

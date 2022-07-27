@@ -1,7 +1,7 @@
 package ua.com.foxminded.newsfeed.data.network
 
 import retrofit2.Response
-import ua.com.foxminded.newsfeed.data.model.NewsResponse
+import ua.com.foxminded.newsfeed.data.dto.NewsResponse
 import ua.com.foxminded.newsfeed.util.Result
 
 class DefaultNewsNetwork(private val newsFeedApi: NewsFeedApi) : NewsNetwork {

@@ -2,7 +2,7 @@ package ua.com.foxminded.newsfeed.data.network
 
 import retrofit2.Response
 import retrofit2.http.GET
-import ua.com.foxminded.newsfeed.data.model.NewsResponse
+import ua.com.foxminded.newsfeed.data.dto.NewsResponse
 
 interface NewsFeedApi {
 

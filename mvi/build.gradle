@@ -31,8 +31,7 @@ android {
 }
 
 dependencies {
-
-    //Android X
+    // Android X
     implementation "androidx.core:core-ktx:$ktx_core_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
 }

@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.ui.saved_news
+package ua.com.foxminded.newsfeed.ui.articles.saved
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.databinding.FragmentSavedNewsBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
-import ua.com.foxminded.newsfeed.ui.adapter.NewsRecyclerAdapter
-import ua.com.foxminded.newsfeed.ui.saved_news.state.SavedNewsScreenEffect
-import ua.com.foxminded.newsfeed.ui.saved_news.state.SavedNewsScreenState
+import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter
+import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
+import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenState
 import ua.com.foxminded.newsfeed.util.Constants
 
 class SavedNewsFragment : HostedFragment<

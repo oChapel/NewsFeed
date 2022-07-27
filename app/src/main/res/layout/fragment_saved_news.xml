@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.saved_news.SavedNewsFragment">
+    tools:context=".ui.articles.saved.SavedNewsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saved_news_recycler_view"
@@ -62,7 +62,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/saved_news_empty_screen_tv_header" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

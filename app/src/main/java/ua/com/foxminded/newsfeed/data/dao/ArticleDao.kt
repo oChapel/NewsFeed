@@ -2,7 +2,7 @@ package ua.com.foxminded.newsfeed.data.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 
 @Dao
 interface ArticleDao {

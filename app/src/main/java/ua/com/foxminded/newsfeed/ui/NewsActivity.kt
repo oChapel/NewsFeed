@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed
+package ua.com.foxminded.newsfeed.ui
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,9 +8,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import ua.com.foxminded.newsfeed.App
+import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.databinding.ActivityNewsBinding
 import ua.com.foxminded.newsfeed.di.DaggerAppComponent
-import ua.com.foxminded.newsfeed.ui.news_list.NewsListContract
+import ua.com.foxminded.newsfeed.ui.articles.news.NewsListContract
 
 class NewsActivity : AppCompatActivity(), NewsListContract.Host {
 

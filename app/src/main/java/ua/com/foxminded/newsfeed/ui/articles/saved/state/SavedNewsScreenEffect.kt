@@ -1,8 +1,8 @@
-package ua.com.foxminded.newsfeed.ui.saved_news.state
+package ua.com.foxminded.newsfeed.ui.articles.saved.state
 
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.mvi.states.AbstractEffect
-import ua.com.foxminded.newsfeed.ui.saved_news.SavedNewsContract
+import ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsContract
 
 sealed class SavedNewsScreenEffect : AbstractEffect<SavedNewsContract.View>() {
 

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import ua.com.foxminded.newsfeed.App
 import ua.com.foxminded.newsfeed.data.NewsRepository
 import ua.com.foxminded.newsfeed.di.AppComponent
-import ua.com.foxminded.newsfeed.ui.news_list.NewsListViewModel
-import ua.com.foxminded.newsfeed.ui.saved_news.SavedNewsViewModel
+import ua.com.foxminded.newsfeed.ui.articles.news.NewsListViewModel
+import ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsViewModel
 import javax.inject.Inject
 
 class NewsViewModelFactory : ViewModelProvider.NewInstanceFactory() {

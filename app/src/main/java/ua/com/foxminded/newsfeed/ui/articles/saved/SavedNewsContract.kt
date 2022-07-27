@@ -1,9 +1,9 @@
-package ua.com.foxminded.newsfeed.ui.saved_news
+package ua.com.foxminded.newsfeed.ui.articles.saved
 
-import ua.com.foxminded.newsfeed.data.model.Item
+import ua.com.foxminded.newsfeed.data.dto.Item
 import ua.com.foxminded.newsfeed.mvi.fragments.FragmentContract
-import ua.com.foxminded.newsfeed.ui.saved_news.state.SavedNewsScreenEffect
-import ua.com.foxminded.newsfeed.ui.saved_news.state.SavedNewsScreenState
+import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
+import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenState
 
 class SavedNewsContract {
 
