@@ -25,7 +25,6 @@ class RoomNewsDao(application: Application) : NewsDao {
         return articleDao.existsInDb(title)
     }
 
-    //TODO
     override suspend fun deleteArticleByTitle(title: String) {
         articleDao.deleteArticleByTitle(title)
     }

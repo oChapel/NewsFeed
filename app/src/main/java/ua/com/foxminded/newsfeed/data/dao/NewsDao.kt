@@ -11,7 +11,6 @@ interface NewsDao {
 
     suspend fun existsInDb(title: String): Boolean
 
-    //TODO
     suspend fun deleteArticleByTitle(title: String)
 
     suspend fun deleteArticle(article: Item)

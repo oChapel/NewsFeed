@@ -40,7 +40,6 @@ class DefaultNewsRepository(
         return localDataSource.existsInDb(title)
     }
 
-    //TODO
     override suspend fun deleteArticleByTitle(title: String) {
         localDataSource.deleteArticleByTitle(title)
     }

@@ -61,7 +61,7 @@ class NewsListViewModel(private val repository: NewsRepository) : MviViewModel<
                     .map { article -> Pair(article, repository.existsInDb(article.title)) }
                     .onEach { pair ->
                         when (pair.second) {
-                            true -> repository.deleteArticleByTitle(pair.first.title) //TODO
+                            true -> repository.deleteArticleByTitle(pair.first.title)
                             false -> repository.saveArticle(pair.first)
                         }
                     }
