@@ -5,23 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.data.Article
 import ua.com.foxminded.newsfeed.databinding.ItemCnnNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemEmptyBinding
 import ua.com.foxminded.newsfeed.databinding.ItemNytNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
 import ua.com.foxminded.newsfeed.ui.articles.adapter.holders.*
 
-class NewsRecyclerAdapter(private val isEmptyScreenEnabled: Boolean) :
-    ListAdapter<Article, NewsViewHolder>(NewsDiffCallback) {
+class NewsRecyclerAdapter(
+    private val isEmptyScreenEnabled: Boolean
+) : ListAdapter<Article, NewsViewHolder>(NewsDiffCallback) {
 
     private val clickFlow = MutableSharedFlow<ClickEvent>(extraBufferCapacity = 1)
 
     fun getClickFlow(): Flow<ClickEvent> = clickFlow
-
-    override fun submitList(list: List<Article>?) {
-        list?.let { super.submitList(ArrayList(list)) }
-    }
 
     override fun getItemViewType(position: Int): Int {
         return if (currentList.isEmpty()) {

@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.data.Article
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
+import ua.com.foxminded.newsfeed.ui.article.ArticleFragment
 import ua.com.foxminded.newsfeed.ui.articles.adapter.ClickEvent
 import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter
-import ua.com.foxminded.newsfeed.ui.articles.article.ArticleFragment
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
 

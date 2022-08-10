@@ -1,14 +1,14 @@
 package ua.com.foxminded.newsfeed.data.network
 
-import ua.com.foxminded.newsfeed.data.dto.NewsResponse
+import ua.com.foxminded.newsfeed.data.NewsSchema
 
 interface NewsNetwork {
 
-    suspend fun getAllNews(): List<NewsResponse>
+    suspend fun getAllNews(): List<NewsSchema>
 
-    suspend fun getNytNews(): NewsResponse
+    suspend fun getNytNews(): NewsSchema
 
-    suspend fun getCnnNews(): NewsResponse
+    suspend fun getCnnNews(): NewsSchema
 
-    suspend fun getWiredNews(): NewsResponse
+    suspend fun getWiredNews(): NewsSchema
 }

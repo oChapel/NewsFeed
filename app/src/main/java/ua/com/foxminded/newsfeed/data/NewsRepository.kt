@@ -1,18 +1,16 @@
 package ua.com.foxminded.newsfeed.data
 
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.NewsResponse
 
 interface NewsRepository {
 
-    suspend fun loadAllNews(): List<NewsResponse>
+    suspend fun loadAllNews(): List<NewsSchema>
 
-    suspend fun getNytNews(): NewsResponse
+    suspend fun getNytNews(): NewsSchema
 
-    suspend fun getCnnNews(): NewsResponse
+    suspend fun getCnnNews(): NewsSchema
 
-    suspend fun getWiredNews(): NewsResponse
+    suspend fun getWiredNews(): NewsSchema
 
     suspend fun saveArticle(article: Article)
 

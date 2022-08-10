@@ -1,28 +1,20 @@
 package ua.com.foxminded.newsfeed.data.network
 
-import ua.com.foxminded.newsfeed.data.dto.NewsResponse
+import ua.com.foxminded.newsfeed.data.NewsSchema
 
 class DefaultNewsNetwork(private val newsFeedApi: NewsFeedApi) : NewsNetwork {
 
-    //TODO handle error?
-
-    override suspend fun getAllNews(): List<NewsResponse> {
-        return ArrayList<NewsResponse>().apply {
+    override suspend fun getAllNews(): List<NewsSchema> {
+        return ArrayList<NewsSchema>().apply {
             add(getNytNews())
             add(getCnnNews())
             add(getWiredNews())
         }
     }
 
-    override suspend fun getNytNews(): NewsResponse {
-        return newsFeedApi.getNytNews()
-    }
+    override suspend fun getNytNews() = newsFeedApi.getNytNews()
 
-    override suspend fun getCnnNews(): NewsResponse {
-        return newsFeedApi.getCnnNews()
-    }
+    override suspend fun getCnnNews() = newsFeedApi.getCnnNews()
 
-    override suspend fun getWiredNews(): NewsResponse {
-        return newsFeedApi.getWiredNews()
-    }
+    override suspend fun getWiredNews() = newsFeedApi.getWiredNews()
 }

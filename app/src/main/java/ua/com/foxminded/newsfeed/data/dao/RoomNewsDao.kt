@@ -2,7 +2,7 @@ package ua.com.foxminded.newsfeed.data.dao
 
 import android.content.Context
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.data.Article
 
 class RoomNewsDao(appCtx: Context) : NewsDao {
 

@@ -16,8 +16,7 @@ class DataModule {
     @Provides
     @Singleton
     fun provideNewsRepository(
-        localDataSource: NewsDao,
-        remoteDataSource: NewsNetwork
+        localDataSource: NewsDao, remoteDataSource: NewsNetwork
     ): NewsRepository {
         return DefaultNewsRepository(localDataSource, remoteDataSource)
     }
@@ -27,6 +26,4 @@ class DataModule {
     fun provideLocalDataSource(): NewsDao {
         return RoomNewsDao(App.instance)
     }
-
-
 }

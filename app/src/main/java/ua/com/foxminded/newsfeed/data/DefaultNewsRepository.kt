@@ -2,8 +2,6 @@ package ua.com.foxminded.newsfeed.data
 
 import kotlinx.coroutines.flow.Flow
 import ua.com.foxminded.newsfeed.data.dao.NewsDao
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.NewsResponse
 import ua.com.foxminded.newsfeed.data.network.NewsNetwork
 
 class DefaultNewsRepository(
@@ -11,19 +9,19 @@ class DefaultNewsRepository(
     private val remoteDataSource: NewsNetwork
 ) : NewsRepository {
 
-    override suspend fun loadAllNews(): List<NewsResponse> {
+    override suspend fun loadAllNews(): List<NewsSchema> {
         return remoteDataSource.getAllNews()
     }
 
-    override suspend fun getNytNews(): NewsResponse {
+    override suspend fun getNytNews(): NewsSchema {
         return remoteDataSource.getNytNews()
     }
 
-    override suspend fun getCnnNews(): NewsResponse {
+    override suspend fun getCnnNews(): NewsSchema {
         return remoteDataSource.getCnnNews()
     }
 
-    override suspend fun getWiredNews(): NewsResponse {
+    override suspend fun getWiredNews(): NewsSchema {
         return remoteDataSource.getWiredNews()
     }
 

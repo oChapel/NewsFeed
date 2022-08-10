@@ -1,7 +1,7 @@
 package ua.com.foxminded.newsfeed.ui.articles.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.data.Article
 
 object NewsDiffCallback : DiffUtil.ItemCallback<Article>() {
 

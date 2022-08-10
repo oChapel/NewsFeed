@@ -1,6 +1,6 @@
 package ua.com.foxminded.newsfeed.ui.articles.adapter
 
-import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.data.Article
 
 sealed class ClickEvent {
 
