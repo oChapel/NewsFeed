@@ -1,17 +1,17 @@
 package ua.com.foxminded.newsfeed.data.dao
 
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.dto.Item
+import ua.com.foxminded.newsfeed.data.dto.Article
 
 interface NewsDao {
 
-    suspend fun insertArticle(article: Item)
+    suspend fun insertArticle(article: Article)
 
-    fun getAllArticles(): Flow<List<Item>>
+    fun getAllArticlesFlow(): Flow<List<Article>>
 
-    suspend fun existsInDb(title: String): Boolean
+    suspend fun existsInDb(guid: String): Boolean
 
-    suspend fun deleteArticleByTitle(title: String)
+    suspend fun deleteArticleByGuid(guid: String)
 
-    suspend fun deleteArticle(article: Item)
+    suspend fun deleteArticle(article: Article)
 }

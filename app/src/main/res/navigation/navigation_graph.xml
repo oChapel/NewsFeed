@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_article" >
         <argument
             android:name="article"
-            app:argType="ua.com.foxminded.newsfeed.data.model.Item" />
+            app:argType="ua.com.foxminded.newsfeed.data.dto.Article" />
     </fragment>
 
 </navigation>

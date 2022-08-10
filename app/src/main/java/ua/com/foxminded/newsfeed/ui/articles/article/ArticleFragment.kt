@@ -25,7 +25,24 @@ class ArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.webView?.apply {
             webViewClient = WebViewClient()
-            loadUrl(args.article.link)
+            try {
+                loadUrl(args.article.link)
+            } catch (error: Exception) {
+                error.printStackTrace()
+                showErrorScreen()
+            }
         }
+    }
+
+    private fun showErrorScreen() {
+        binding?.articleErrorScreen?.animate()?.alpha(1F)
+            ?.withStartAction {
+                binding?.webView?.visibility = View.INVISIBLE
+                binding?.articleErrorScreen?.visibility = View.VISIBLE
+            }?.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+    }
+
+    companion object {
+        const val KEY_STRING_ARTICLE = "article"
     }
 }

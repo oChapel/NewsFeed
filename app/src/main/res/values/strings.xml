@@ -14,11 +14,20 @@
 
     <!-- NewsListFragment -->
     <string name="menu_item_string_refresh">Refresh</string>
+    <string name="news_list_error_screen_text">Some error occurred while loading news</string>
+
+    <!-- ArticleFragment -->
+    <string name="article_error_screen_desc">error screen image</string>
+    <string name="article_error_screen_text">Some error occurred while loading URL</string>
 
     <!-- SavedNewsFragment -->
     <string name="saved_news_empty_screen_desc">empty screen image</string>
     <string name="saved_news_empty_screen_text_header">You have no saved news yet.</string>
     <string name="saved_news_empty_screen_text_body">To save article, navigate to all feeds \n and press bookmark icon</string>
+
+    <!-- Error Fragment -->
+    <string name="error_dialog_title">An error occurred</string>
+    <string name="error_dialog_message">Failed to load news. Cause:</string>
 
     <!-- NewsList RecyclerView item -->
     <string name="source_name_nyt">The New York Times</string>
@@ -29,7 +38,6 @@
     <string name="news_item_bookmark_desc">image to save article</string>
 
     <!-- Toasts -->
-    <string name="failed_to_load_news">Failed to load news</string>
     <string name="failed_to_connect_with_db">Some error occurred while processing your request</string>
 
     <!-- SnackBars -->

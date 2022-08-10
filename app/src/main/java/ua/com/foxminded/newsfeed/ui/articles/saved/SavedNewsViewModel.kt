@@ -2,24 +2,27 @@ package ua.com.foxminded.newsfeed.ui.articles.saved
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.data.dto.Item
+import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenState
+import ua.com.foxminded.newsfeed.util.dispatchers.DispatchersHolder
 
-class SavedNewsViewModel(private val repository: NewsRepository) : MviViewModel<
+class SavedNewsViewModel(
+    private val repository: NewsRepository,
+    private val dispatchers: DispatchersHolder
+) : MviViewModel<
         SavedNewsContract.View,
         SavedNewsScreenState,
         SavedNewsScreenEffect>(), SavedNewsContract.ViewModel {
 
     private var launch: Job? = null
-    private val articleFlow = MutableSharedFlow<Item>(extraBufferCapacity = 1)
+    private val articleFlow = MutableSharedFlow<Article>(extraBufferCapacity = 1)
 
     override fun onStateChanged(event: Lifecycle.Event) {
         super.onStateChanged(event)
@@ -32,24 +35,22 @@ class SavedNewsViewModel(private val repository: NewsRepository) : MviViewModel<
                         }
                     }
                     .collect { list ->
-                        if (list.isEmpty()) {
-                            setState(SavedNewsScreenState.ShowEmptyScreen)
-                        } else {
-                            setState(SavedNewsScreenState.ShowNews(list))
-                        }
+                        setState(
+                            SavedNewsScreenState.ShowNews(list.sortedByDescending { it.pubDate })
+                        )
                     }
             }
 
             viewModelScope.launch {
                 articleFlow
-                    .map { article -> Pair(article, repository.existsInDb(article.title)) }
+                    .map { article -> Pair(article, repository.existsInDb(article.guid)) }
                     .onEach { pair ->
                         when (pair.second) {
                             false -> repository.saveArticle(pair.first)
                             true -> repository.deleteArticle(pair.first)
                         }
                     }
-                    .flowOn(Dispatchers.IO)
+                    .flowOn(dispatchers.getIO())
                     .catch { error ->
                         error.printStackTrace()
                         setEffect(
@@ -65,7 +66,7 @@ class SavedNewsViewModel(private val repository: NewsRepository) : MviViewModel<
         }
     }
 
-    override fun onArticleStateChanged(article: Item) {
+    override fun onArticleStateChanged(article: Article) {
         articleFlow.tryEmit(article)
     }
 

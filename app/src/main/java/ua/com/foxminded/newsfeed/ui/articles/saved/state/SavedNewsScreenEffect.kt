@@ -1,6 +1,6 @@
 package ua.com.foxminded.newsfeed.ui.articles.saved.state
 
-import ua.com.foxminded.newsfeed.data.dto.Item
+import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.mvi.states.AbstractEffect
 import ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsContract
 
@@ -12,7 +12,7 @@ sealed class SavedNewsScreenEffect : AbstractEffect<SavedNewsContract.View>() {
         }
     }
 
-    class ShowUndoSnackBar(private val article: Item) : SavedNewsScreenEffect() {
+    class ShowUndoSnackBar(private val article: Article) : SavedNewsScreenEffect() {
         override fun handle(screen: SavedNewsContract.View) {
             screen.showUndoSnackBar(article)
         }

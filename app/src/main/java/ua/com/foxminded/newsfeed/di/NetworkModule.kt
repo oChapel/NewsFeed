@@ -6,8 +6,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ua.com.foxminded.newsfeed.data.network.NewsFeedApi
+import ua.com.foxminded.newsfeed.BuildConfig
 import ua.com.foxminded.newsfeed.data.network.DefaultNewsNetwork
+import ua.com.foxminded.newsfeed.data.network.NewsFeedApi
 import ua.com.foxminded.newsfeed.data.network.NewsNetwork
 import javax.inject.Singleton
 
@@ -48,7 +49,13 @@ class NetworkModule {
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
-            .also { it.level = HttpLoggingInterceptor.Level.BODY }
+            .also {
+                it.level = if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
+                }
+            }
     }
 
     companion object {

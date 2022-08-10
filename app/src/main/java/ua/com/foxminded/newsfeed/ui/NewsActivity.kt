@@ -13,6 +13,7 @@ import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.databinding.ActivityNewsBinding
 import ua.com.foxminded.newsfeed.di.DaggerAppComponent
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListContract
+import ua.com.foxminded.newsfeed.ui.error.ErrorFragment
 
 class NewsActivity : AppCompatActivity(), NewsListContract.Host {
 
@@ -20,7 +21,7 @@ class NewsActivity : AppCompatActivity(), NewsListContract.Host {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.component = DaggerAppComponent.create()
+        App.instance.component = DaggerAppComponent.create()
 
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,6 +48,16 @@ class NewsActivity : AppCompatActivity(), NewsListContract.Host {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun showErrorDialog(error: Throwable) {
+        error.printStackTrace()
+        ErrorFragment.newInstance(
+            R.string.error_dialog_title, R.string.error_dialog_message, android.R.string.ok
+        ).apply {
+            setError(error)
+            show(supportFragmentManager, ErrorFragment.TAG)
         }
     }
 }

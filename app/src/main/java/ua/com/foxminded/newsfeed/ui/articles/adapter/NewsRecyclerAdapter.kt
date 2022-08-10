@@ -1,215 +1,96 @@
 package ua.com.foxminded.newsfeed.ui.articles.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.dto.Item
+import androidx.recyclerview.widget.ListAdapter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.databinding.ItemCnnNewsBinding
+import ua.com.foxminded.newsfeed.databinding.ItemEmptyBinding
 import ua.com.foxminded.newsfeed.databinding.ItemNytNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
-import ua.com.foxminded.newsfeed.util.Constants
-import ua.com.foxminded.newsfeed.util.Utils
+import ua.com.foxminded.newsfeed.ui.articles.adapter.holders.*
 
-class NewsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsRecyclerAdapter(private val isEmptyScreenEnabled: Boolean) :
+    ListAdapter<Article, NewsViewHolder>(NewsDiffCallback) {
 
-    val newsList = ArrayList<Item>()
-    private var onItemCLickListener: ((Item) -> Unit)? = null
-    private var onBookmarkClickListener: ((Item) -> Unit)? = null
+    private val clickFlow = MutableSharedFlow<ClickEvent>(extraBufferCapacity = 1)
 
-    fun setNews(recentNews: List<Item>) {
-        val oldNews = ArrayList<Item>(newsList)
-        this.newsList.apply {
-            clear()
-            addAll(recentNews)
-            sortByDescending { it.pubDate }
-        }
-        DiffUtil.calculateDiff(DiffUtilCallback(oldNews, newsList))
-            .dispatchUpdatesTo(this)
+    fun getClickFlow(): Flow<ClickEvent> = clickFlow
+
+    override fun submitList(list: List<Article>?) {
+        list?.let { super.submitList(ArrayList(list)) }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when {
-            newsList[position].link.contains(NYT_DOMAIN, ignoreCase = true) -> NYT_ARTICLE
-            newsList[position].link.contains(CNN_DOMAIN, ignoreCase = true) -> CNN_ARTICLE
-            newsList[position].link.contains(WIRED_DOMAIN, ignoreCase = true) -> WIRED_ARTICLE
-            else -> UNKNOWN_ARTICLE
+        return if (currentList.isEmpty()) {
+            EMPTY_VIEW
+        } else {
+            when {
+                getItem(position).link.contains(NYT_DOMAIN, ignoreCase = true) -> NYT_ARTICLE
+                getItem(position).link.contains(CNN_DOMAIN, ignoreCase = true) -> CNN_ARTICLE
+                getItem(position).link.contains(WIRED_DOMAIN, ignoreCase = true) -> WIRED_ARTICLE
+                else -> UNKNOWN_ARTICLE
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return when (viewType) {
+            EMPTY_VIEW -> EmptyViewHolder(
+                ItemEmptyBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
             NYT_ARTICLE -> NytNewsHolder(
                 ItemNytNewsBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ), clickFlow
             )
             CNN_ARTICLE -> CnnNewsHolder(
                 ItemCnnNewsBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ), clickFlow
             )
             else -> WiredNewsHolder(
                 ItemWiredNewsBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ), clickFlow
             )
         }
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>
-    ) {
-        when {
-            payloads.isEmpty() -> super.onBindViewHolder(holder, position, payloads)
-            else -> if (payloads[0] is Boolean) updateBookmarkIcon(holder, payloads[0] as Boolean)
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder.itemViewType) {
-            NYT_ARTICLE -> (holder as NytNewsHolder).bind(newsList[position])
-            CNN_ARTICLE -> (holder as CnnNewsHolder).bind(newsList[position])
-            WIRED_ARTICLE -> (holder as WiredNewsHolder).bind(newsList[position])
-        }
-    }
-
     override fun getItemCount(): Int {
-        return newsList.size
+        //TODO java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionEmptyViewHolder
+        if (isEmptyScreenEnabled) {
+            if (currentList.isEmpty()) return 1
+        }
+        return currentList.size
     }
 
-    fun setOnItemClickListener(listener: (Item) -> Unit) {
-        onItemCLickListener = listener
-    }
-
-    fun setOnBookmarkClickListener(listener: (Item) -> Unit) {
-        onBookmarkClickListener = listener
-    }
-
-    private fun updateBookmarkIcon(holder: RecyclerView.ViewHolder, isArticleInDb: Boolean) {
-        when (holder.itemViewType) {
-            NYT_ARTICLE -> (holder as NytNewsHolder).onBookmarkIconChanged(isArticleInDb)
-            CNN_ARTICLE -> (holder as CnnNewsHolder).onBookmarkIconChanged(isArticleInDb)
-            WIRED_ARTICLE -> (holder as WiredNewsHolder).onBookmarkIconChanged(isArticleInDb)
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        if (currentList.isNotEmpty()) {
+            holder.bind(getItem(position))
         }
     }
 
-    inner class NytNewsHolder(
-        private val binding: ItemNytNewsBinding
-        ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(article: Item) {
-            if (article.enclosure.link != Constants.EMPTY_STRING) {
-                Picasso.get().load(article.enclosure.link).into(binding.nytNewsImage)
-            } else {
-                binding.nytNewsImage.visibility = View.GONE
-            }
-            binding.nytNewsTitle.text = article.title
-            binding.nytNewsDescription.text = article.description
-            binding.nytNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
-
-            if (article.isSaved) {
-                binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
-            } else {
-                binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark)
-            }
-
-            binding.nytNewsRootView.setOnClickListener {
-                onItemCLickListener?.let { it(article) }
-            }
-
-            binding.nytNewsBookmark.setOnClickListener {
-                onBookmarkClickListener?.let { it(article) }
-            }
-        }
-
-        fun onBookmarkIconChanged(isArticleInDb: Boolean) {
-            if (isArticleInDb) {
-                binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
-            } else {
-                binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark)
-            }
-        }
+    override fun onViewAttachedToWindow(holder: NewsViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.setUpListeners()
     }
 
-    inner class CnnNewsHolder(private val binding: ItemCnnNewsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Item) {
-            if (article.enclosure.link != Constants.EMPTY_STRING) {
-                Picasso.get().load(article.enclosure.link).into(binding.cnnNewsImage)
-            } else {
-                binding.cnnNewsImage.visibility = View.GONE
-            }
-            binding.cnnNewsTitle.text = article.title
-            binding.cnnNewsDescription.text = article.description
-            binding.cnnNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
-
-            if (article.isSaved) {
-                binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
-            } else {
-                binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark)
-            }
-
-            binding.cnnNewsRootView.setOnClickListener {
-                onItemCLickListener?.let { it(article) }
-            }
-
-            binding.cnnNewsBookmark.setOnClickListener {
-                onBookmarkClickListener?.let { it(article) }
-            }
-        }
-
-        fun onBookmarkIconChanged(isArticleInDb: Boolean) {
-            if (isArticleInDb) {
-                binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
-            } else {
-                binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark)
-            }
-        }
-    }
-
-    inner class WiredNewsHolder(private val binding: ItemWiredNewsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Item) {
-            article.enclosure.thumbnail?.let {
-                Picasso.get().load(it).into(binding.wiredNewsImage)
-            } ?: run { binding.wiredNewsImage.visibility = View.GONE }
-            binding.wiredNewsTitle.text = article.title
-            binding.wiredNewsDescription.text = article.description
-            binding.wiredNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
-
-            if (article.isSaved) {
-                binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
-            } else {
-                binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark)
-            }
-
-            binding.wiredNewsRootView.setOnClickListener {
-                onItemCLickListener?.let { it(article) }
-            }
-
-            binding.wiredNewsBookmark.setOnClickListener {
-                onBookmarkClickListener?.let { it(article) }
-            }
-        }
-
-        fun onBookmarkIconChanged(isArticleInDb: Boolean) {
-            if (isArticleInDb) {
-                binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
-            } else {
-                binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark)
-            }
-        }
+    override fun onViewDetachedFromWindow(holder: NewsViewHolder) {
+        holder.clearListeners()
+        super.onViewDetachedFromWindow(holder)
     }
 
     companion object {
-        private const val UNKNOWN_ARTICLE = 0
+        private const val EMPTY_VIEW = 0
         private const val NYT_ARTICLE = 1
         private const val CNN_ARTICLE = 2
         private const val WIRED_ARTICLE = 3
+        private const val UNKNOWN_ARTICLE = 4
 
         private const val NYT_DOMAIN = "nytimes.com"
         private const val CNN_DOMAIN = "cnn.com"
