@@ -2,7 +2,9 @@ package ua.com.foxminded.newsfeed.data.network
 
 import ua.com.foxminded.newsfeed.data.NewsSchema
 
-class DefaultNewsNetwork(private val newsFeedApi: NewsFeedApi) : NewsNetwork {
+class DefaultNewsNetwork(
+    private val newsFeedApi: NewsFeedApi
+) : NewsNetwork {
 
     override suspend fun getAllNews(): List<NewsSchema> {
         return ArrayList<NewsSchema>().apply {

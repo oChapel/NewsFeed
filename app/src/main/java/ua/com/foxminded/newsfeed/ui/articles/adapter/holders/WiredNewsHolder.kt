@@ -16,6 +16,11 @@ class WiredNewsHolder(
 
     private var article: Article? = null
 
+    init {
+        binding.wiredNewsRootView.setOnClickListener(this)
+        binding.wiredNewsBookmark.setOnClickListener(this)
+    }
+
     override fun bind(article: Article) {
         this.article = article
         article.enclosure.thumbnail?.let {
@@ -30,16 +35,6 @@ class WiredNewsHolder(
         } else {
             binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark)
         }
-    }
-
-    override fun setUpListeners() {
-        binding.wiredNewsRootView.setOnClickListener(this)
-        binding.wiredNewsBookmark.setOnClickListener(this)
-    }
-
-    override fun clearListeners() {
-        binding.wiredNewsRootView.setOnClickListener(null)
-        binding.wiredNewsBookmark.setOnClickListener(null)
     }
 
     override fun onClick(view: View) {

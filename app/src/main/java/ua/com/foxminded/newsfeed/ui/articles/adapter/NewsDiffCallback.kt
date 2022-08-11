@@ -10,6 +10,6 @@ object NewsDiffCallback : DiffUtil.ItemCallback<Article>() {
     }
 
     override fun areContentsTheSame(oldArticle: Article, newArticle: Article): Boolean {
-        return oldArticle == newArticle && oldArticle.isSaved == newArticle.isSaved
+        return oldArticle == newArticle
     }
 }

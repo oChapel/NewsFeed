@@ -16,9 +16,14 @@ class NytNewsHolder(
 
     private var article: Article? = null
 
+    init {
+        binding.nytNewsRootView.setOnClickListener(this)
+        binding.nytNewsBookmark.setOnClickListener(this)
+    }
+
     override fun bind(article: Article) {
         this.article = article
-        if (article.enclosure.link != EMPTY_STRING) {
+        if (article.enclosure.link != "") {
             Picasso.get().load(article.enclosure.link).into(binding.nytNewsImage)
         } else {
             binding.nytNewsImage.visibility = View.GONE
@@ -32,16 +37,6 @@ class NytNewsHolder(
         } else {
             binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark)
         }
-    }
-
-    override fun setUpListeners() {
-        binding.nytNewsRootView.setOnClickListener(this)
-        binding.nytNewsBookmark.setOnClickListener(this)
-    }
-
-    override fun clearListeners() {
-        binding.nytNewsRootView.setOnClickListener(null)
-        binding.nytNewsBookmark.setOnClickListener(null)
     }
 
     override fun onClick(view: View) {

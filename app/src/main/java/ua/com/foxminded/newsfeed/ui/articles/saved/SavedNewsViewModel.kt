@@ -29,16 +29,14 @@ class SavedNewsViewModel(
         if (event == Lifecycle.Event.ON_CREATE && launch == null) {
             launch = viewModelScope.launch {
                 repository.getAllArticlesFromDb()
-                    .onEach { list ->
-                        for (article in list) {
-                            article.isSaved = true
-                        }
+                    .map { list ->
+                        for (article in list) article.isSaved = true
+                        return@map list.sortedByDescending { it.pubDate }
+                            .ifEmpty {
+                                list.toMutableList().apply { add(Article()) }
+                            }
                     }
-                    .collect { list ->
-                        setState(
-                            SavedNewsScreenState.ShowNews(list.sortedByDescending { it.pubDate })
-                        )
-                    }
+                    .collect { list -> setState(SavedNewsScreenState.ShowNews(list)) }
             }
 
             viewModelScope.launch {

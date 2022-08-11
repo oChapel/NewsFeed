@@ -42,6 +42,11 @@ class ArticleFragment : Fragment() {
             }?.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
     companion object {
         const val KEY_STRING_ARTICLE = "article"
     }

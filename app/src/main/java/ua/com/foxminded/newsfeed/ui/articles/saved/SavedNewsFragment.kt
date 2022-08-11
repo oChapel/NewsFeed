@@ -32,7 +32,7 @@ class SavedNewsFragment : HostedFragment<
         SavedNewsContract.Host>(), SavedNewsContract.View {
 
     private var binding: FragmentSavedNewsBinding? = null
-    private val newsAdapter = NewsRecyclerAdapter(true)
+    private val newsAdapter = NewsRecyclerAdapter()
     private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.UP or ItemTouchHelper.DOWN,
         ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT

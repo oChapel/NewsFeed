@@ -2,9 +2,6 @@ package ua.com.foxminded.newsfeed.ui.articles.news
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -31,7 +28,7 @@ class NewsListFragment : HostedFragment<
     NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private var binding: FragmentNewsListBinding? = null
-    private val newsAdapter = NewsRecyclerAdapter(false)
+    private val newsAdapter = NewsRecyclerAdapter()
 
     override fun createModel(): NewsListContract.ViewModel {
         return ViewModelProvider(this, NewsViewModelFactory())[NewsListViewModel::class.java]
@@ -39,7 +36,6 @@ class NewsListFragment : HostedFragment<
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
 
         lifecycleScope.launch {
             newsAdapter.getClickFlow().collect {
@@ -66,21 +62,6 @@ class NewsListFragment : HostedFragment<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.news_list_options_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.option_menu_item_refresh -> {
-                        model?.loadNews()
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         binding?.newsListRecyclerView?.apply {
             adapter = newsAdapter

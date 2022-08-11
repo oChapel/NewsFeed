@@ -16,9 +16,14 @@ class CnnNewsHolder(
 
     private var article: Article? = null
 
+    init {
+        binding.cnnNewsRootView.setOnClickListener(this)
+        binding.cnnNewsBookmark.setOnClickListener(this)
+    }
+
     override fun bind(article: Article) {
         this.article = article
-        if (article.enclosure.link != EMPTY_STRING) {
+        if (article.enclosure.link != "") {
             Picasso.get().load(article.enclosure.link).into(binding.cnnNewsImage)
         } else {
             binding.cnnNewsImage.visibility = View.GONE
@@ -32,16 +37,6 @@ class CnnNewsHolder(
         } else {
             binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark)
         }
-    }
-
-    override fun setUpListeners() {
-        binding.cnnNewsRootView.setOnClickListener(this)
-        binding.cnnNewsBookmark.setOnClickListener(this)
-    }
-
-    override fun clearListeners() {
-        binding.cnnNewsRootView.setOnClickListener(null)
-        binding.cnnNewsBookmark.setOnClickListener(null)
     }
 
     override fun onClick(view: View) {

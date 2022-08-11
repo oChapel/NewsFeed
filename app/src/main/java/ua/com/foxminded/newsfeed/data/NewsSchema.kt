@@ -34,17 +34,23 @@ data class Enclosure(
 data class Article(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val author: String,
-    val categories: List<String>,
-    val content: String,
-    val description: String,
-    val enclosure: Enclosure,
-    val guid: String,
-    val link: String,
-    val pubDate: String,
-    val thumbnail: String,
-    val title: String
+    val author: String = "",
+    val categories: List<String> = listOf(),
+    val content: String = "",
+    val description: String = "",
+    val enclosure: Enclosure = Enclosure(),
+    val guid: String = "",
+    val link: String = "",
+    val pubDate: String = "",
+    val thumbnail: String = "",
+    val title: String = ""
 ) : Serializable {
     @Ignore
     var isSaved: Boolean = false
+
+    companion object {
+        const val NYT_DOMAIN = "nytimes.com"
+        const val CNN_DOMAIN = "cnn.com"
+        const val WIRED_DOMAIN = "wired.com"
+    }
 }
