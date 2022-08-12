@@ -15,8 +15,7 @@ import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider.Comp
 import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider.Companion.NYT_ARTICLE
 import ua.com.foxminded.newsfeed.ui.articles.adapter.holders.*
 
-class NewsRecyclerAdapter : ListAdapter<Article, NewsViewHolder>(NewsDiffCallback),
-    ViewHolderTypeProvider {
+class NewsRecyclerAdapter : ListAdapter<Article, NewsViewHolder>(NewsDiffCallback) {
 
     private val clickFlow = MutableSharedFlow<ClickEvent>(extraBufferCapacity = 1)
 

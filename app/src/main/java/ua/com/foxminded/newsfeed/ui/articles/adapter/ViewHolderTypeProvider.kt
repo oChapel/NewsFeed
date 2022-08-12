@@ -1,18 +1,8 @@
 package ua.com.foxminded.newsfeed.ui.articles.adapter
 
-import ua.com.foxminded.newsfeed.data.Article
-
 interface ViewHolderTypeProvider {
 
-    fun Article.getViewHolderType(): Int {
-        return when {
-            link == "" -> EMPTY_VIEW
-            link.contains(Article.NYT_DOMAIN, ignoreCase = true) -> NYT_ARTICLE
-            link.contains(Article.CNN_DOMAIN, ignoreCase = true) -> CNN_ARTICLE
-            link.contains(Article.WIRED_DOMAIN, ignoreCase = true) -> WIRED_ARTICLE
-            else -> UNKNOWN_ARTICLE
-        }
-    }
+    fun getViewHolderType(): Int
 
     companion object {
         const val EMPTY_VIEW = 0

@@ -38,9 +38,12 @@ class WiredNewsHolder(
     }
 
     override fun onClick(view: View) {
-        when (view) {
-            binding.wiredNewsRootView -> clickFlow.tryEmit(ClickEvent.OnItemClicked(article!!))
-            binding.wiredNewsBookmark -> clickFlow.tryEmit(ClickEvent.OnBookmarkClicked(article!!))
+        article?.let {
+            when (view) {
+                binding.wiredNewsRootView -> clickFlow.tryEmit(ClickEvent.OnItemClicked(it))
+                binding.wiredNewsBookmark -> clickFlow.tryEmit(ClickEvent.OnBookmarkClicked(it))
+                else -> {}
+            }
         }
     }
 }

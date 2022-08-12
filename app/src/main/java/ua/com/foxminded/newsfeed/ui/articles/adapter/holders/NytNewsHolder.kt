@@ -23,7 +23,7 @@ class NytNewsHolder(
 
     override fun bind(article: Article) {
         this.article = article
-        if (article.enclosure.link != "") {
+        if (article.hasImageLink()) {
             Picasso.get().load(article.enclosure.link).into(binding.nytNewsImage)
         } else {
             binding.nytNewsImage.visibility = View.GONE
@@ -40,9 +40,12 @@ class NytNewsHolder(
     }
 
     override fun onClick(view: View) {
-        when (view) {
-            binding.nytNewsRootView -> clickFlow.tryEmit(ClickEvent.OnItemClicked(article!!))
-            binding.nytNewsBookmark -> clickFlow.tryEmit(ClickEvent.OnBookmarkClicked(article!!))
+        article?.let {
+            when (view) {
+                binding.nytNewsRootView -> clickFlow.tryEmit(ClickEvent.OnItemClicked(it))
+                binding.nytNewsBookmark -> clickFlow.tryEmit(ClickEvent.OnBookmarkClicked(it))
+                else -> {}
+            }
         }
     }
 }

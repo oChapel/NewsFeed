@@ -3,6 +3,7 @@ package ua.com.foxminded.newsfeed.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider
 import java.io.Serializable
 
 
@@ -44,7 +45,7 @@ data class Article(
     val pubDate: String = "",
     val thumbnail: String = "",
     val title: String = ""
-) : Serializable {
+) : Serializable, ViewHolderTypeProvider {
 
     @Ignore
     var isSaved: Boolean = false
@@ -53,6 +54,18 @@ data class Article(
         const val NYT_DOMAIN = "nytimes.com"
         const val CNN_DOMAIN = "cnn.com"
         const val WIRED_DOMAIN = "wired.com"
+    }
+
+    fun hasImageLink(): Boolean = enclosure.link != ""
+
+    override fun getViewHolderType(): Int {
+        return when {
+            link == "" -> ViewHolderTypeProvider.EMPTY_VIEW
+            link.contains(NYT_DOMAIN, ignoreCase = true) -> ViewHolderTypeProvider.NYT_ARTICLE
+            link.contains(CNN_DOMAIN, ignoreCase = true) -> ViewHolderTypeProvider.CNN_ARTICLE
+            link.contains(WIRED_DOMAIN, ignoreCase = true) -> ViewHolderTypeProvider.WIRED_ARTICLE
+            else -> ViewHolderTypeProvider.UNKNOWN_ARTICLE
+        }
     }
 
     override fun equals(other: Any?): Boolean {

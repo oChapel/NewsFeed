@@ -23,7 +23,7 @@ class CnnNewsHolder(
 
     override fun bind(article: Article) {
         this.article = article
-        if (article.enclosure.link != "") {
+        if (article.hasImageLink()) {
             Picasso.get().load(article.enclosure.link).into(binding.cnnNewsImage)
         } else {
             binding.cnnNewsImage.visibility = View.GONE
@@ -40,9 +40,12 @@ class CnnNewsHolder(
     }
 
     override fun onClick(view: View) {
-        when (view) {
-            binding.cnnNewsRootView -> clickFlow.tryEmit(ClickEvent.OnItemClicked(article!!))
-            binding.cnnNewsBookmark -> clickFlow.tryEmit(ClickEvent.OnBookmarkClicked(article!!))
+        article?.let {
+            when (view) {
+                binding.cnnNewsRootView -> clickFlow.tryEmit(ClickEvent.OnItemClicked(it))
+                binding.cnnNewsBookmark -> clickFlow.tryEmit(ClickEvent.OnBookmarkClicked(it))
+                else -> {}
+            }
         }
     }
 }
