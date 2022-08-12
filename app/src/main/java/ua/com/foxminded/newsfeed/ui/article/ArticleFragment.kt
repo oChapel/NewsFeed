@@ -35,11 +35,10 @@ class ArticleFragment : Fragment() {
     }
 
     private fun showErrorScreen() {
-        binding?.articleErrorScreen?.animate()?.alpha(1F)
-            ?.withStartAction {
-                binding?.webView?.visibility = View.INVISIBLE
-                binding?.articleErrorScreen?.visibility = View.VISIBLE
-            }?.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        binding?.articleErrorScreen?.animate()?.alpha(1F)?.withStartAction {
+            binding?.webView?.visibility = View.INVISIBLE
+            binding?.articleErrorScreen?.visibility = View.VISIBLE
+        }?.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
     }
 
     override fun onDestroyView() {

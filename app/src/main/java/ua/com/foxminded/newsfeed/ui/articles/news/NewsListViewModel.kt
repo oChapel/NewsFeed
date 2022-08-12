@@ -40,10 +40,9 @@ class NewsListViewModel(
                         return@map list.sortedByDescending { it.pubDate }
                     }
                     .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
-                        for (article in loadedNews) {
-                            article.isSaved = savedNews.any { it.guid == article.guid }
+                        return@combine loadedNews.map { a ->
+                            a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
                         }
-                        return@combine loadedNews
                     }
                     .flowOn(dispatchers.getIO())
                     .catch { error ->

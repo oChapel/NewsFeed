@@ -30,11 +30,9 @@ class SavedNewsViewModel(
             launch = viewModelScope.launch {
                 repository.getAllArticlesFromDb()
                     .map { list ->
-                        for (article in list) article.isSaved = true
-                        return@map list.sortedByDescending { it.pubDate }
-                            .ifEmpty {
-                                list.toMutableList().apply { add(Article()) }
-                            }
+                        return@map list.map { it.copy().apply { isSaved = true } }
+                            .sortedByDescending { it.pubDate }
+                            .ifEmpty { list.toMutableList().apply { add(Article()) } }
                     }
                     .collect { list -> setState(SavedNewsScreenState.ShowNews(list)) }
             }

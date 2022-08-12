@@ -1,7 +1,9 @@
 package ua.com.foxminded.newsfeed.ui.articles.news
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -77,7 +79,8 @@ class NewsListFragment : HostedFragment<
     }
 
     override fun showNews(list: List<Article>) {
-        newsAdapter.submitList(list)
+        // if lists are same - diffUtil don't check items
+        newsAdapter.submitList(ArrayList(list))
     }
 
     override fun showErrorDialog(error: Throwable) {
