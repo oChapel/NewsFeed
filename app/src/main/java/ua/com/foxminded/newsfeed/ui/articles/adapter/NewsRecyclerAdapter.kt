@@ -6,16 +6,17 @@ import androidx.recyclerview.widget.ListAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import ua.com.foxminded.newsfeed.data.Article
+import ua.com.foxminded.newsfeed.data.NewsItem
 import ua.com.foxminded.newsfeed.databinding.ItemCnnNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemEmptyBinding
 import ua.com.foxminded.newsfeed.databinding.ItemNytNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
-import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider.Companion.CNN_ARTICLE
-import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider.Companion.EMPTY_VIEW
-import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider.Companion.NYT_ARTICLE
+import ua.com.foxminded.newsfeed.data.NewsItem.Companion.CNN_ARTICLE
+import ua.com.foxminded.newsfeed.data.NewsItem.Companion.EMPTY_VIEW
+import ua.com.foxminded.newsfeed.data.NewsItem.Companion.NYT_ARTICLE
 import ua.com.foxminded.newsfeed.ui.articles.adapter.holders.*
 
-class NewsRecyclerAdapter : ListAdapter<Article, NewsViewHolder>(NewsDiffCallback) {
+class NewsRecyclerAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback) {
 
     private val clickFlow = MutableSharedFlow<ClickEvent>(extraBufferCapacity = 1)
 
@@ -49,6 +50,8 @@ class NewsRecyclerAdapter : ListAdapter<Article, NewsViewHolder>(NewsDiffCallbac
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        if (holder.itemViewType != EMPTY_VIEW) {
+            holder.bind(getItem(position) as Article)
+        }
     }
 }

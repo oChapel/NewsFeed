@@ -1,6 +1,7 @@
 package ua.com.foxminded.newsfeed.ui.articles.news
 
 import ua.com.foxminded.newsfeed.data.Article
+import ua.com.foxminded.newsfeed.data.NewsItem
 import ua.com.foxminded.newsfeed.mvi.fragments.FragmentContract
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
@@ -14,7 +15,7 @@ class NewsListContract {
 
     interface View : FragmentContract.View {
         fun setProgress(isVisible: Boolean)
-        fun showNews(list: List<Article>)
+        fun showNews(list: List<NewsItem>)
         fun showErrorDialog(error: Throwable)
     }
 

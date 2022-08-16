@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ua.com.foxminded.newsfeed.databinding.FragmentArticleBinding
 
-class ArticleFragment : Fragment() {
+class ArticleFragment : Fragment(), View.OnClickListener {
 
     private var binding: FragmentArticleBinding? = null
     private val args: ArticleFragmentArgs by navArgs()
@@ -23,22 +27,78 @@ class ArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.webView?.apply {
-            webViewClient = WebViewClient()
-            try {
-                loadUrl(args.article.link)
-            } catch (error: Exception) {
-                error.printStackTrace()
-                showErrorScreen()
+        binding?.articleErrorOkBtn?.setOnClickListener(this)
+        binding?.articleErrorTryAgainBtn?.setOnClickListener(this)
+
+        binding?.webView?.webViewClient = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                setProgressVisibility(false)
+            }
+
+            override fun onReceivedError(
+                view: WebView?, request: WebResourceRequest?, error: WebResourceError?
+            ) {
+                view?.loadUrl("about:blank")
+                setErrorScreenVisibility(true)
+            }
+        }
+        loadArticle()
+    }
+
+    override fun onClick(view: View) {
+        when (view) {
+            binding?.articleErrorOkBtn -> findNavController().popBackStack()
+            binding?.articleErrorTryAgainBtn -> {
+                setErrorScreenVisibility(false)
+                loadArticle()
             }
         }
     }
 
-    private fun showErrorScreen() {
-        binding?.articleErrorScreen?.animate()?.alpha(1F)?.withStartAction {
-            binding?.webView?.visibility = View.INVISIBLE
-            binding?.articleErrorScreen?.visibility = View.VISIBLE
-        }?.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+    private fun loadArticle() {
+        setProgressVisibility(true)
+        binding?.webView?.loadUrl(args.article.link)
+    }
+
+    private fun setProgressVisibility(isVisible: Boolean) {
+        val targetAlpha = if (isVisible) 1F else 0F
+        val progressBar = binding?.articleProgressBar
+        if (progressBar?.alpha != targetAlpha) {
+            progressBar?.animate()?.alpha(targetAlpha)
+                ?.withStartAction(
+                    if (isVisible) Runnable { progressBar.visibility = View.VISIBLE } else null
+                )
+                ?.setDuration(resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                ?.withEndAction(
+                    if (isVisible) null else Runnable { progressBar.visibility = View.INVISIBLE }
+                )
+        }
+    }
+
+    private fun setErrorScreenVisibility(isVisible: Boolean) {
+        val targetAlpha = if (isVisible) 1F else 0F
+        val webView = binding?.webView
+        val errorScreen = binding?.articleErrorScreen
+        if (errorScreen?.alpha != targetAlpha) {
+            errorScreen?.animate()?.alpha(targetAlpha)
+                ?.withStartAction(
+                    if (isVisible) Runnable { errorScreen.visibility = View.VISIBLE } else null
+                )
+                ?.setDuration(resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                ?.withEndAction(
+                    if (isVisible) null else Runnable { errorScreen.visibility = View.INVISIBLE }
+                )
+
+            webView?.animate()?.alpha(1 - targetAlpha)
+                ?.withStartAction(
+                    if (isVisible) null else Runnable { webView.visibility = View.VISIBLE }
+                )
+                ?.setDuration(resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                ?.withEndAction(
+                    if (isVisible) Runnable { webView.visibility = View.INVISIBLE } else null
+                )
+        }
     }
 
     override fun onDestroyView() {
@@ -47,6 +107,5 @@ class ArticleFragment : Fragment() {
     }
 
     companion object {
-        const val KEY_STRING_ARTICLE = "article"
     }
 }

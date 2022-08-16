@@ -1,6 +1,6 @@
-package ua.com.foxminded.newsfeed.ui.articles.adapter
+package ua.com.foxminded.newsfeed.data
 
-interface ViewHolderTypeProvider {
+interface NewsItem {
 
     fun getViewHolderType(): Int
 

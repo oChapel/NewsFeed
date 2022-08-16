@@ -18,7 +18,8 @@
 
     <!-- ArticleFragment -->
     <string name="article_error_screen_desc">error screen image</string>
-    <string name="article_error_screen_text">Some error occurred while loading URL</string>
+    <string name="article_error_screen_text"><b>Ooooops!</b> \n Some error occurred while loading URL</string>
+    <string name="article_error_try_again">Try again</string>
 
     <!-- SavedNewsFragment -->
     <string name="saved_news_empty_screen_desc">empty screen image</string>

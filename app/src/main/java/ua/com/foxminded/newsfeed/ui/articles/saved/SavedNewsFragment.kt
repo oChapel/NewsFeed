@@ -15,10 +15,10 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.Article
+import ua.com.foxminded.newsfeed.data.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentSavedNewsBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
-import ua.com.foxminded.newsfeed.ui.article.ArticleFragment
 import ua.com.foxminded.newsfeed.ui.articles.adapter.ClickEvent
 import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
@@ -43,8 +43,9 @@ class SavedNewsFragment : HostedFragment<
         ): Boolean = true
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val article = newsAdapter.currentList[viewHolder.adapterPosition]
-            model?.onArticleStateChanged(article)
+            newsAdapter.currentList[viewHolder.adapterPosition].let {
+                if (it is Article) model?.onArticleStateChanged(it)
+            }
         }
     }
     private val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -55,12 +56,11 @@ class SavedNewsFragment : HostedFragment<
         lifecycleScope.launch {
             newsAdapter.getClickFlow().collect {
                 if (it is ClickEvent.OnItemClicked) {
-                    findNavController().navigate(
-                        R.id.action_savedNewsFragment_to_articleFragment,
-                        Bundle().apply {
-                            putSerializable(ArticleFragment.KEY_STRING_ARTICLE, it.article)
-                        }
-                    )
+                   findNavController().navigate(
+                       SavedNewsFragmentDirections.actionSavedNewsFragmentToArticleFragment(
+                           it.article
+                       )
+                   )
                 } else if (it is ClickEvent.OnBookmarkClicked) {
                     model?.onArticleStateChanged(it.article)
                 }
@@ -90,7 +90,7 @@ class SavedNewsFragment : HostedFragment<
         itemTouchHelper.attachToRecyclerView(binding?.savedNewsRecyclerView)
     }
 
-    override fun showNews(list: List<Article>) {
+    override fun showNews(list: List<NewsItem>) {
         newsAdapter.submitList(list)
     }
 
@@ -108,25 +108,6 @@ class SavedNewsFragment : HostedFragment<
             }
         }
     }
-
-    /*private fun setUpVisibility(areNewsPresent: Boolean) {
-        val recyclerView = binding?.savedNewsRecyclerView
-        val emptyScreen = binding?.savedNewsEmptyScreen
-        val targetAlpha = if (areNewsPresent) 1F else 0F
-        val animationDuration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        if (targetAlpha != recyclerView?.alpha) {
-            recyclerView?.animate()?.alpha(targetAlpha)
-                ?.withStartAction(if (areNewsPresent) Runnable { recyclerView.visibility = View.VISIBLE} else null)
-                ?.setDuration(animationDuration)
-                ?.withEndAction(if (areNewsPresent) null else Runnable { recyclerView.visibility = View.INVISIBLE })
-                ?.start()
-
-            emptyScreen?.animate()?.alpha(1 - targetAlpha)
-                ?.withStartAction(if (areNewsPresent) null else Runnable { emptyScreen.visibility = View.VISIBLE })
-                ?.setDuration(animationDuration)
-                ?.withEndAction(if (areNewsPresent) Runnable { emptyScreen.visibility = View.INVISIBLE } else null)
-        }
-    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

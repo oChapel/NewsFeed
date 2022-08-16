@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.Article
+import ua.com.foxminded.newsfeed.data.EmptyViewItem
 import ua.com.foxminded.newsfeed.data.NewsRepository
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
@@ -30,9 +31,12 @@ class SavedNewsViewModel(
             launch = viewModelScope.launch {
                 repository.getAllArticlesFromDb()
                     .map { list ->
-                        return@map list.map { it.copy().apply { isSaved = true } }
-                            .sortedByDescending { it.pubDate }
-                            .ifEmpty { list.toMutableList().apply { add(Article()) } }
+                        return@map if (list.isNotEmpty()) {
+                            list.map { it.copy().apply { isSaved = true } }
+                                .sortedByDescending { it.pubDate }
+                        } else {
+                            ArrayList<EmptyViewItem>().apply { add(EmptyViewItem()) }
+                        }
                     }
                     .collect { list -> setState(SavedNewsScreenState.ShowNews(list)) }
             }

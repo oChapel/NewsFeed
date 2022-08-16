@@ -3,7 +3,6 @@ package ua.com.foxminded.newsfeed.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import ua.com.foxminded.newsfeed.ui.articles.adapter.ViewHolderTypeProvider
 import java.io.Serializable
 
 
@@ -35,17 +34,17 @@ data class Enclosure(
 data class Article(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val author: String = "",
-    val categories: List<String> = listOf(),
-    val content: String = "",
-    val description: String = "",
-    val enclosure: Enclosure = Enclosure(),
-    val guid: String = "",
-    val link: String = "",
-    val pubDate: String = "",
-    val thumbnail: String = "",
-    val title: String = ""
-) : Serializable, ViewHolderTypeProvider {
+    val author: String,
+    val categories: List<String>,
+    val content: String,
+    val description: String,
+    val enclosure: Enclosure,
+    val guid: String,
+    val link: String,
+    val pubDate: String,
+    val thumbnail: String,
+    val title: String
+) : Serializable, NewsItem {
 
     @Ignore
     var isSaved: Boolean = false
@@ -60,11 +59,10 @@ data class Article(
 
     override fun getViewHolderType(): Int {
         return when {
-            link == "" -> ViewHolderTypeProvider.EMPTY_VIEW
-            link.contains(NYT_DOMAIN, ignoreCase = true) -> ViewHolderTypeProvider.NYT_ARTICLE
-            link.contains(CNN_DOMAIN, ignoreCase = true) -> ViewHolderTypeProvider.CNN_ARTICLE
-            link.contains(WIRED_DOMAIN, ignoreCase = true) -> ViewHolderTypeProvider.WIRED_ARTICLE
-            else -> ViewHolderTypeProvider.UNKNOWN_ARTICLE
+            link.contains(NYT_DOMAIN, ignoreCase = true) -> NewsItem.NYT_ARTICLE
+            link.contains(CNN_DOMAIN, ignoreCase = true) -> NewsItem.CNN_ARTICLE
+            link.contains(WIRED_DOMAIN, ignoreCase = true) -> NewsItem.WIRED_ARTICLE
+            else -> NewsItem.UNKNOWN_ARTICLE
         }
     }
 
