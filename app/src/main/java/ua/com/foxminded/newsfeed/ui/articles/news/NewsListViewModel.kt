@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.com.foxminded.newsfeed.data.Article
 import ua.com.foxminded.newsfeed.data.NewsRepository
+import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState

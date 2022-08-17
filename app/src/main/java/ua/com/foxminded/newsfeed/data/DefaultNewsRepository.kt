@@ -2,6 +2,8 @@ package ua.com.foxminded.newsfeed.data
 
 import kotlinx.coroutines.flow.Flow
 import ua.com.foxminded.newsfeed.data.dao.NewsDao
+import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.data.dto.NewsSchema
 import ua.com.foxminded.newsfeed.data.network.NewsNetwork
 
 class DefaultNewsRepository(

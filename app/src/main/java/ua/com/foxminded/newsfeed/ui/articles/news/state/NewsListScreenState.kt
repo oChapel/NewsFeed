@@ -1,6 +1,6 @@
 package ua.com.foxminded.newsfeed.ui.articles.news.state
 
-import ua.com.foxminded.newsfeed.data.NewsItem
+import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.mvi.states.AbstractState
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListContract
 

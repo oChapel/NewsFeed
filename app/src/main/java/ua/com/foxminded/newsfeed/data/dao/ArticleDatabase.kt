@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ua.com.foxminded.newsfeed.data.Article
+import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.data.dao.util.RoomTypeConverters
 
 @Database(entities = [Article::class], version = 1, exportSchema = false)

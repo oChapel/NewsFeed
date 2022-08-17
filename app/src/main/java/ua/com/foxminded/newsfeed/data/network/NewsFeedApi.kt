@@ -1,7 +1,7 @@
 package ua.com.foxminded.newsfeed.data.network
 
 import retrofit2.http.GET
-import ua.com.foxminded.newsfeed.data.NewsSchema
+import ua.com.foxminded.newsfeed.data.dto.NewsSchema
 
 interface NewsFeedApi {
 

@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.launch
-import ua.com.foxminded.newsfeed.data.NewsItem
+import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory

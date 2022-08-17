@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.data
+package ua.com.foxminded.newsfeed.data.dto
 
 import androidx.room.Entity
 import androidx.room.Ignore

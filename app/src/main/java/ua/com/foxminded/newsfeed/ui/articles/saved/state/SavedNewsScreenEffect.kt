@@ -1,6 +1,6 @@
 package ua.com.foxminded.newsfeed.ui.articles.saved.state
 
-import ua.com.foxminded.newsfeed.data.Article
+import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.mvi.states.AbstractEffect
 import ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsContract
 
