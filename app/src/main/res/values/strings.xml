@@ -7,7 +7,7 @@
     <string name="title_saved_news">Saved</string>
 
     <!-- Nav Fragments labels -->
-    <string name="label_news_list_fragment">Latest News</string>
+    <string name="label_all_feeds_fragment">Latest News</string>
     <string name="label_groups_fragment">Groups</string>
     <string name="label_saved_news_fragment">Saved News</string>
     <string name="label_article_fragment">ArticleFragment</string>

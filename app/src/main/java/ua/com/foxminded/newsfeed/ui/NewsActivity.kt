@@ -34,7 +34,7 @@ class NewsActivity : AppCompatActivity(), NewsListContract.Host {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.newsListFragment, R.id.groupsFragment, R.id.savedNewsFragment
+                R.id.allFeedsFragment, R.id.groupsFragment, R.id.savedNewsFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

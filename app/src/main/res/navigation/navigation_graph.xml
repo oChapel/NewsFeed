@@ -3,29 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/newsListFragment">
+    app:startDestination="@+id/allFeedsFragment">
 
     <fragment
-        android:id="@+id/newsListFragment"
-        android:name="ua.com.foxminded.newsfeed.ui.articles.news.NewsListFragment"
-        android:label="@string/label_news_list_fragment"
-        tools:layout="@layout/fragment_news_list" >
+        android:id="@+id/allFeedsFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.articles.news.feeds.AllFeedsFragment"
+        android:label="@string/label_all_feeds_fragment">
         <action
-            android:id="@+id/action_newsListFragment_to_articleFragment"
+            android:id="@+id/action_allFeedsFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/groupsFragment"
-        android:name="ua.com.foxminded.newsfeed.ui.groups.GroupsFragment"
-        android:label="@string/label_groups_fragment"
-        tools:layout="@layout/fragment_groups" />
 
     <fragment
         android:id="@+id/savedNewsFragment"
         android:name="ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsFragment"
         android:label="@string/label_saved_news_fragment"
-        tools:layout="@layout/fragment_saved_news" >
+        tools:layout="@layout/fragment_saved_news">
         <action
             android:id="@+id/action_savedNewsFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
@@ -34,10 +27,31 @@
     <fragment
         android:id="@+id/articleFragment"
         android:name="ua.com.foxminded.newsfeed.ui.article.ArticleFragment"
-        tools:layout="@layout/fragment_article" >
+        tools:layout="@layout/fragment_article">
         <argument
             android:name="article"
             app:argType="ua.com.foxminded.newsfeed.data.dto.Article" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.groups.GroupsFragment"
+        android:label="@string/label_groups_fragment"
+        tools:layout="@layout/fragment_groups">
+        <action
+            android:id="@+id/action_groupsFragment_to_groupFragment"
+            app:destination="@id/singleFeedFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/singleFeedFragment"
+        android:name="ua.com.foxminded.newsfeed.ui.articles.news.feed.SingleFeedFragment">
+        <action
+            android:id="@+id/action_singleFeedFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+        <argument
+            android:name="sourceType"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class EndlessScrollListener : RecyclerView.OnScrollListener() {
 
-    private val visibleThreshold = 5
+    private val visibleThreshold = 2
     private val startingPageIndex = 0
     private var currentPage = 0
     private var previousTotalItemCount = 0

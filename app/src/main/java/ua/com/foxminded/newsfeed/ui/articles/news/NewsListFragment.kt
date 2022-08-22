@@ -4,24 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.EndlessScrollListener
-import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
-import ua.com.foxminded.newsfeed.ui.articles.adapter.ClickEvent
 import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
 
-class NewsListFragment : HostedFragment<
+abstract class NewsListFragment : HostedFragment<
         NewsListContract.View,
         NewsListScreenState,
         NewsListScreenEffect,
@@ -29,33 +23,11 @@ class NewsListFragment : HostedFragment<
         NewsListContract.Host>(),
     NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
-    private var binding: FragmentNewsListBinding? = null
-    private val newsAdapter = NewsRecyclerAdapter()
+    protected var binding: FragmentNewsListBinding? = null
+    protected val newsAdapter = NewsRecyclerAdapter()
     private val scrollListener: EndlessScrollListener = object : EndlessScrollListener() {
         override fun onLoadMore(page: Int, totalItemCount: Int, view: RecyclerView) {
             model?.loadNews(page)
-        }
-    }
-
-    override fun createModel(): NewsListContract.ViewModel {
-        return ViewModelProvider(this, NewsViewModelFactory())[NewsListViewModel::class.java]
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            newsAdapter.getClickFlow().collect {
-                if (it is ClickEvent.OnItemClicked) {
-                    findNavController().navigate(
-                        NewsListFragmentDirections.actionNewsListFragmentToArticleFragment(
-                            it.article
-                        )
-                    )
-                } else if (it is ClickEvent.OnBookmarkClicked) {
-                    model?.onBookmarkClicked(it.article)
-                }
-            }
         }
     }
 
