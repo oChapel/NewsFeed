@@ -1,16 +1,21 @@
 package ua.com.foxminded.newsfeed.data.network
 
 import retrofit2.http.GET
+import retrofit2.http.Query
 import ua.com.foxminded.newsfeed.data.dto.NewsSchema
 
 interface NewsFeedApi {
 
-    @GET("/v1/api.json?rss_url=https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FBusiness.xml")
-    suspend fun getNytNews(): NewsSchema
+    @GET("api.json")
+    suspend fun getNews(
+        @Query("rss_url") url: String,
+        @Query("api_key") apiKey: String,
+        @Query("count") count: Int
+    ): NewsSchema
 
-    @GET("/v1/api.json?rss_url=http%3A%2F%2Ffeeds.wired.com%2Fwired%2Findex")
-    suspend fun getWiredNews(): NewsSchema
-
-    @GET("/v1/api.json?rss_url=http%3A%2F%2Frss.cnn.com%2Frss%2Fcnn_topstories.rss")
-    suspend fun getCnnNews(): NewsSchema
+    companion object {
+        const val NYT_URL = "http://www.nytimes.com/services/xml/rss/nyt/Business.xml"
+        const val CNN_URL = "http://rss.cnn.com/rss/edition.rss"
+        const val WIRED_URL = "http://www.wired.com/feed/rss"
+    }
 }

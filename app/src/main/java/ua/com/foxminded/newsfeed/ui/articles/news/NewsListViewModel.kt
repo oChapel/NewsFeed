@@ -32,9 +32,9 @@ class NewsListViewModel(
                 newsFlow
                     .onEach { setState(NewsListScreenState.Loading()) }
                     .flowOn(dispatchers.getMain())
-                    .map {
+                    .map { page ->
                         val list = ArrayList<Article>()
-                        for (response in repository.loadAllNews()) {
+                        for (response in repository.loadAllNews(page)) {
                             list.addAll(response.items)
                         }
                         return@map list.sortedByDescending { it.pubDate }
@@ -68,12 +68,8 @@ class NewsListViewModel(
         }
     }
 
-    override fun loadNews() {
-        if (newsFlow.value == 0) {
-            newsFlow.tryEmit(1)
-        } else {
-            newsFlow.tryEmit(0)
-        }
+    override fun loadNews(page: Int) {
+        newsFlow.tryEmit(page)
     }
 
     override fun onBookmarkClicked(article: Article) {

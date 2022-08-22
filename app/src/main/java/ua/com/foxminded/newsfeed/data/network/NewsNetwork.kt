@@ -4,11 +4,11 @@ import ua.com.foxminded.newsfeed.data.dto.NewsSchema
 
 interface NewsNetwork {
 
-    suspend fun getAllNews(): List<NewsSchema>
+    suspend fun getAllNews(page: Int, pageSize: Int): List<NewsSchema>
 
-    suspend fun getNytNews(): NewsSchema
+    suspend fun getNytNews(page: Int, pageSize: Int): NewsSchema
 
-    suspend fun getCnnNews(): NewsSchema
+    suspend fun getCnnNews(page: Int, pageSize: Int): NewsSchema
 
-    suspend fun getWiredNews(): NewsSchema
+    suspend fun getWiredNews(page: Int, pageSize: Int): NewsSchema
 }

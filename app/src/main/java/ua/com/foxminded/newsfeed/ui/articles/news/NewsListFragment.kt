@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
+import ua.com.foxminded.newsfeed.ui.EndlessScrollListener
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
 import ua.com.foxminded.newsfeed.ui.articles.adapter.ClickEvent
 import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter
@@ -29,6 +31,11 @@ class NewsListFragment : HostedFragment<
 
     private var binding: FragmentNewsListBinding? = null
     private val newsAdapter = NewsRecyclerAdapter()
+    private val scrollListener: EndlessScrollListener = object : EndlessScrollListener() {
+        override fun onLoadMore(page: Int, totalItemCount: Int, view: RecyclerView) {
+            model?.loadNews(page)
+        }
+    }
 
     override fun createModel(): NewsListContract.ViewModel {
         return ViewModelProvider(this, NewsViewModelFactory())[NewsListViewModel::class.java]
@@ -65,6 +72,7 @@ class NewsListFragment : HostedFragment<
         binding?.newsListRecyclerView?.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(scrollListener)
         }
         binding?.newsSwipeRefresh?.setOnRefreshListener(this)
     }
@@ -84,7 +92,8 @@ class NewsListFragment : HostedFragment<
     }
 
     override fun onRefresh() {
-        model?.loadNews()
+        scrollListener.resetState()
+        model?.loadNews(0)
     }
 
     override fun onDestroyView() {

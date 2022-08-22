@@ -41,7 +41,7 @@ data class Article(
     val enclosure: Enclosure,
     val guid: String,
     val link: String,
-    val pubDate: String,
+    val pubDate: String?,
     val thumbnail: String,
     val title: String
 ) : Serializable, NewsItem {

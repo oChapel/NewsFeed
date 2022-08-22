@@ -59,6 +59,6 @@ class NetworkModule {
     }
 
     companion object {
-        private const val BASE_URL = "https://api.rss2json.com"
+        private const val BASE_URL = "https://api.rss2json.com/v1/"
     }
 }

@@ -11,20 +11,20 @@ class DefaultNewsRepository(
     private val remoteDataSource: NewsNetwork
 ) : NewsRepository {
 
-    override suspend fun loadAllNews(): List<NewsSchema> {
-        return remoteDataSource.getAllNews()
+    override suspend fun loadAllNews(page: Int): List<NewsSchema> {
+        return remoteDataSource.getAllNews(page, NewsRepository.MULTIPLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun getNytNews(): NewsSchema {
-        return remoteDataSource.getNytNews()
+    override suspend fun getNytNews(page: Int): NewsSchema {
+        return remoteDataSource.getNytNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun getCnnNews(): NewsSchema {
-        return remoteDataSource.getCnnNews()
+    override suspend fun getCnnNews(page: Int): NewsSchema {
+        return remoteDataSource.getCnnNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun getWiredNews(): NewsSchema {
-        return remoteDataSource.getWiredNews()
+    override suspend fun getWiredNews(page: Int): NewsSchema {
+        return remoteDataSource.getWiredNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
     override suspend fun saveArticle(article: Article) {

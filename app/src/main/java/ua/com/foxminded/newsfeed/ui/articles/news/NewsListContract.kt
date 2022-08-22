@@ -9,7 +9,7 @@ import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
 class NewsListContract {
 
     interface ViewModel : FragmentContract.ViewModel<NewsListScreenState, NewsListScreenEffect> {
-        fun loadNews()
+        fun loadNews(page: Int)
         fun onBookmarkClicked(article: Article)
     }
 

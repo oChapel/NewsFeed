@@ -16,6 +16,9 @@
     <string name="menu_item_string_refresh">Refresh</string>
     <string name="news_list_error_screen_text">Some error occurred while loading news</string>
 
+    <!-- GroupsFragment -->
+    <string name="groups_image_desc">source image</string>
+
     <!-- ArticleFragment -->
     <string name="article_error_screen_desc">error screen image</string>
     <string name="article_error_screen_text"><b>Ooooops!</b> \n Some error occurred while loading URL</string>
