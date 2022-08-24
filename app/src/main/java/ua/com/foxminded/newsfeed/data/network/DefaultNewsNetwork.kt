@@ -18,18 +18,21 @@ class DefaultNewsNetwork(
     override suspend fun getNytNews(page: Int, pageSize: Int) = newsFeedApi.getNews(
         NewsFeedApi.NYT_URL,
         BuildConfig.API_KEY,
+        NewsFeedApi.PARAM_PUB_DATE,
         (page + 1) * pageSize
     )
 
     override suspend fun getCnnNews(page: Int, pageSize: Int) = newsFeedApi.getNews(
         NewsFeedApi.CNN_URL,
         BuildConfig.API_KEY,
+        NewsFeedApi.PARAM_PUB_DATE,
         (page + 1) * pageSize
     )
 
     override suspend fun getWiredNews(page: Int, pageSize: Int) = newsFeedApi.getNews(
         NewsFeedApi.WIRED_URL,
         BuildConfig.API_KEY,
+        NewsFeedApi.PARAM_PUB_DATE,
         (page + 1) * pageSize
     )
 }

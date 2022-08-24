@@ -24,7 +24,11 @@ abstract class NewsListViewModel(
     protected var launch: Job? = null
 
     override fun loadNews(page: Int) {
-        newsFlow.tryEmit(page)
+        if (page == 0 && newsFlow.value == 0) {
+            newsFlow.tryEmit(-1)
+        } else {
+            newsFlow.tryEmit(page)
+        }
     }
 
     override fun onBookmarkClicked(article: Article) {

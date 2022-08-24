@@ -39,8 +39,10 @@ class ArticleFragment : Fragment(), View.OnClickListener {
             override fun onReceivedError(
                 view: WebView?, request: WebResourceRequest?, error: WebResourceError?
             ) {
-                view?.loadUrl("about:blank")
-                setErrorScreenVisibility(true)
+                if (error?.errorCode != ERROR_UNKNOWN && error?.errorCode != ERROR_HOST_LOOKUP) {
+                    view?.loadUrl("about:blank")
+                    setErrorScreenVisibility(true)
+                }
             }
         }
         loadArticle()
@@ -104,8 +106,5 @@ class ArticleFragment : Fragment(), View.OnClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    companion object {
     }
 }

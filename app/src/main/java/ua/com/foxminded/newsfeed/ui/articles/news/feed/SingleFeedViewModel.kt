@@ -24,14 +24,15 @@ class SingleFeedViewModel(
                 newsFlow
                     .onEach { setState(NewsListScreenState.Loading()) }
                     .flowOn(dispatchers.getMain())
-                    .map { page ->
+                    .map { p ->
+                        val page = if (p == -1) 0 else p
                         val list = ArrayList<Article>()
                         when (sourceType) {
                             SourceTypes.NYT_FEED -> list.addAll(repository.getNytNews(page).items)
                             SourceTypes.CNN_FEED -> list.addAll(repository.getCnnNews(page).items)
                             SourceTypes.WIRED_FEED -> list.addAll(repository.getWiredNews(page).items)
                         }
-                        return@map list.sortedByDescending { it.pubDate }
+                        return@map list
                     }
                     .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
                         return@combine loadedNews.map { a ->

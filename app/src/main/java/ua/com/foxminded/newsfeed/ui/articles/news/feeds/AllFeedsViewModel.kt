@@ -23,7 +23,8 @@ class AllFeedsViewModel(
                 newsFlow
                     .onEach { setState(NewsListScreenState.Loading()) }
                     .flowOn(dispatchers.getMain())
-                    .map { page ->
+                    .map { p ->
+                        val page = if (p == -1) 0 else p
                         val list = ArrayList<Article>()
                         for (response in repository.loadAllNews(page)) {
                             list.addAll(response.items)
