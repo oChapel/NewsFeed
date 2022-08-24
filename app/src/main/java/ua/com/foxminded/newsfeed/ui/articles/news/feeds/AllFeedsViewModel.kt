@@ -19,30 +19,7 @@ class AllFeedsViewModel(
     override fun onStateChanged(event: Lifecycle.Event) {
         super.onStateChanged(event)
         if (event == Lifecycle.Event.ON_CREATE && launch == null) {
-            launch = viewModelScope.launch {
-                newsFlow
-                    .onEach { setState(NewsListScreenState.Loading()) }
-                    .flowOn(dispatchers.getMain())
-                    .map { p ->
-                        val page = if (p == -1) 0 else p
-                        val list = ArrayList<Article>()
-                        for (response in repository.loadAllNews(page)) {
-                            list.addAll(response.items)
-                        }
-                        return@map list.sortedByDescending { it.pubDate }
-                    }
-                    .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
-                        return@combine loadedNews.map { a ->
-                            a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
-                        }
-                    }
-                    .flowOn(dispatchers.getIO())
-                    .catch { error ->
-                        setState(NewsListScreenState.Error())
-                        setEffect(NewsListScreenEffect.ShowError(error))
-                    }
-                    .collect { list -> setState(NewsListScreenState.LoadNews(list)) }
-            }
+            launchJob()
 
             viewModelScope.launch {
                 articleFlow
@@ -57,6 +34,33 @@ class AllFeedsViewModel(
                     .catch { error -> setEffect(NewsListScreenEffect.ShowError(error)) }
                     .collect()
             }
+        }
+    }
+
+    override fun launchJob() {
+        launch = viewModelScope.launch {
+            newsFlow
+                .onEach { setState(NewsListScreenState.Loading()) }
+                .flowOn(dispatchers.getMain())
+                .map { p ->
+                    val page = if (p == -1) 0 else p
+                    val list = ArrayList<Article>()
+                    for (response in repository.loadAllNews(page)) {
+                        list.addAll(response.items)
+                    }
+                    return@map list.sortedByDescending { it.pubDate }
+                }
+                .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
+                    return@combine loadedNews.map { a ->
+                        a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
+                    }
+                }
+                .flowOn(dispatchers.getIO())
+                .catch { error ->
+                    setState(NewsListScreenState.Error())
+                    setEffect(NewsListScreenEffect.ShowError(error))
+                }
+                .collect { list -> setState(NewsListScreenState.LoadNews(list)) }
         }
     }
 }

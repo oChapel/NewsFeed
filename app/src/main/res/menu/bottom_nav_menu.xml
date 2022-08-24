@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/newsListFragment"
+        android:id="@+id/allFeedsFragment"
         android:icon="@drawable/ic_news_list_black_24dp"
         android:title="@string/title_news_list" />
 

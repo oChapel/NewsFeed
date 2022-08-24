@@ -23,7 +23,13 @@ abstract class NewsListViewModel(
     protected val articleFlow = MutableSharedFlow<Article>(extraBufferCapacity = 1)
     protected var launch: Job? = null
 
+    abstract fun launchJob()
+
     override fun loadNews(page: Int) {
+        if (launch?.isCompleted == true) {
+            launchJob()
+        }
+
         if (page == 0 && newsFlow.value == 0) {
             newsFlow.tryEmit(-1)
         } else {

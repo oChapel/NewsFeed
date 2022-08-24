@@ -20,32 +20,7 @@ class SingleFeedViewModel(
     override fun onStateChanged(event: Lifecycle.Event) {
         super.onStateChanged(event)
         if (event == Lifecycle.Event.ON_CREATE && launch == null) {
-            launch = viewModelScope.launch {
-                newsFlow
-                    .onEach { setState(NewsListScreenState.Loading()) }
-                    .flowOn(dispatchers.getMain())
-                    .map { p ->
-                        val page = if (p == -1) 0 else p
-                        val list = ArrayList<Article>()
-                        when (sourceType) {
-                            SourceTypes.NYT_FEED -> list.addAll(repository.getNytNews(page).items)
-                            SourceTypes.CNN_FEED -> list.addAll(repository.getCnnNews(page).items)
-                            SourceTypes.WIRED_FEED -> list.addAll(repository.getWiredNews(page).items)
-                        }
-                        return@map list
-                    }
-                    .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
-                        return@combine loadedNews.map { a ->
-                            a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
-                        }
-                    }
-                    .flowOn(dispatchers.getIO())
-                    .catch { error ->
-                        setState(NewsListScreenState.Error())
-                        setEffect(NewsListScreenEffect.ShowError(error))
-                    }
-                    .collect { list -> setState(NewsListScreenState.LoadNews(list)) }
-            }
+            launchJob()
 
             viewModelScope.launch {
                 articleFlow
@@ -60,6 +35,35 @@ class SingleFeedViewModel(
                     .catch { error -> setEffect(NewsListScreenEffect.ShowError(error)) }
                     .collect()
             }
+        }
+    }
+
+    override fun launchJob() {
+        launch = viewModelScope.launch {
+            newsFlow
+                .onEach { setState(NewsListScreenState.Loading()) }
+                .flowOn(dispatchers.getMain())
+                .map { p ->
+                    val page = if (p == -1) 0 else p
+                    val list = ArrayList<Article>()
+                    when (sourceType) {
+                        SourceTypes.NYT_FEED -> list.addAll(repository.getNytNews(page).items)
+                        SourceTypes.CNN_FEED -> list.addAll(repository.getCnnNews(page).items)
+                        SourceTypes.WIRED_FEED -> list.addAll(repository.getWiredNews(page).items)
+                    }
+                    return@map list
+                }
+                .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
+                    return@combine loadedNews.map { a ->
+                        a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
+                    }
+                }
+                .flowOn(dispatchers.getIO())
+                .catch { error ->
+                    setState(NewsListScreenState.Error())
+                    setEffect(NewsListScreenEffect.ShowError(error))
+                }
+                .collect { list -> setState(NewsListScreenState.LoadNews(list)) }
         }
     }
 }
