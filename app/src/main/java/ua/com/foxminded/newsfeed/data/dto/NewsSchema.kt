@@ -1,7 +1,6 @@
 package ua.com.foxminded.newsfeed.data.dto
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
@@ -32,13 +31,12 @@ data class Enclosure(
 
 @Entity(tableName = "articles")
 data class Article(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
     val author: String,
     val categories: List<String>,
     val content: String,
     val description: String,
     val enclosure: Enclosure,
+    @PrimaryKey
     val guid: String,
     val link: String,
     val pubDate: String?,
@@ -46,8 +44,7 @@ data class Article(
     val title: String
 ) : Serializable, NewsItem {
 
-    @Ignore
-    var isSaved: Boolean = false
+    var isBookmarked: Boolean = false
 
     companion object {
         const val NYT_DOMAIN = "nytimes.com"
@@ -72,7 +69,6 @@ data class Article(
 
         other as Article
 
-        if (id != other.id) return false
         if (author != other.author) return false
         if (categories != other.categories) return false
         if (content != other.content) return false
@@ -83,24 +79,23 @@ data class Article(
         if (pubDate != other.pubDate) return false
         if (thumbnail != other.thumbnail) return false
         if (title != other.title) return false
-        if (isSaved != other.isSaved) return false
+        if (isBookmarked != other.isBookmarked) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + author.hashCode()
+        var result = author.hashCode()
         result = 31 * result + categories.hashCode()
         result = 31 * result + content.hashCode()
         result = 31 * result + description.hashCode()
         result = 31 * result + enclosure.hashCode()
         result = 31 * result + guid.hashCode()
         result = 31 * result + link.hashCode()
-        result = 31 * result + pubDate.hashCode()
+        result = 31 * result + (pubDate?.hashCode() ?: 0)
         result = 31 * result + thumbnail.hashCode()
         result = 31 * result + title.hashCode()
-        result = 31 * result + isSaved.hashCode()
+        result = 31 * result + isBookmarked.hashCode()
         return result
     }
 }

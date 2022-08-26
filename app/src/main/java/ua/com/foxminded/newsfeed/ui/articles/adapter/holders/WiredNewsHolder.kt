@@ -30,7 +30,7 @@ class WiredNewsHolder(
         binding.wiredNewsDescription.text = article.description
         binding.wiredNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
 
-        if (article.isSaved) {
+        if (article.isBookmarked) {
             binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
         } else {
             binding.wiredNewsBookmark.setImageResource(R.drawable.ic_bookmark)

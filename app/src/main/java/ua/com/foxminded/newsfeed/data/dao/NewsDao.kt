@@ -7,11 +7,15 @@ interface NewsDao {
 
     suspend fun insertArticle(article: Article)
 
-    fun getAllArticlesFlow(): Flow<List<Article>>
+    suspend fun insertNews(list: List<Article>)
 
-    suspend fun existsInDb(guid: String): Boolean
+    suspend fun getAllCachedNews(page: Int, pageSize: Int): List<Article>
 
-    suspend fun deleteArticleByGuid(guid: String)
+    suspend fun getCachedNewsBySource(page: Int, pageSize: Int, domain: String): List<Article>
+
+    fun getSavedNewsFlow(): Flow<List<Article>>
+
+    suspend fun isBookmarked(guid: String): Boolean
 
     suspend fun deleteArticle(article: Article)
 }

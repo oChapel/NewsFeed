@@ -17,16 +17,26 @@ class RoomNewsDao(appCtx: Context) : NewsDao {
         articleDao.insertArticle(article)
     }
 
-    override fun getAllArticlesFlow(): Flow<List<Article>> {
-        return articleDao.getAllArticlesFlow()
+    override suspend fun insertNews(list: List<Article>) {
+        articleDao.insertNews(list)
     }
 
-    override suspend fun existsInDb(guid: String): Boolean {
-        return articleDao.existsInDb(guid)
+    override suspend fun getAllCachedNews(page: Int, pageSize: Int): List<Article> {
+        return articleDao.getAllCachedNews((page + 1) * pageSize)
     }
 
-    override suspend fun deleteArticleByGuid(guid: String) {
-        articleDao.deleteArticleByGuid(guid)
+    override suspend fun getCachedNewsBySource(
+        page: Int, pageSize: Int, domain: String
+    ): List<Article> {
+        return articleDao.getCachedNewsBySource((page + 1) * pageSize, domain)
+    }
+
+    override fun getSavedNewsFlow(): Flow<List<Article>> {
+        return articleDao.getSavedNewsFlow()
+    }
+
+    override suspend fun isBookmarked(guid: String): Boolean {
+        return articleDao.isBookmarked(guid)
     }
 
     override suspend fun deleteArticle(article: Article) {

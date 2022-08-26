@@ -11,4 +11,16 @@ sealed class NewsListScreenEffect : AbstractEffect<NewsListContract.View>() {
             screen.showErrorDialog(error)
         }
     }
+
+    class ShowToast(private val resId: Int) : NewsListScreenEffect() {
+        override fun handle(screen: NewsListContract.View) {
+            screen.showToast(resId)
+        }
+    }
+
+    class ShowPopupWindow() : NewsListScreenEffect() {
+        override fun handle(screen: NewsListContract.View) {
+            screen.showPopupWindow()
+        }
+    }
 }

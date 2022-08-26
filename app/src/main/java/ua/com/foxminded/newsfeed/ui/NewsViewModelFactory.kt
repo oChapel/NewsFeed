@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ua.com.foxminded.newsfeed.App
 import ua.com.foxminded.newsfeed.data.NewsRepository
+import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.ui.articles.news.feed.SingleFeedViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.feeds.AllFeedsViewModel
@@ -23,15 +24,18 @@ class NewsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     @Inject
     lateinit var dispatchers: DispatchersHolder
 
+    @Inject
+    lateinit var statusListener: ConnectivityStatusListener
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         appComponent.inject(this)
         if (modelClass.isAssignableFrom(NewsListViewModel::class.java)) {
-            return AllFeedsViewModel(repository, dispatchers) as T
+            return AllFeedsViewModel(repository, dispatchers, statusListener) as T
         } else if (modelClass.isAssignableFrom(SavedNewsViewModel::class.java)) {
             return SavedNewsViewModel(repository, dispatchers) as T
         } else if (modelClass.isAssignableFrom(SingleFeedViewModel::class.java)) {
-            return SingleFeedViewModel(sourceType, repository, dispatchers) as T
+            return SingleFeedViewModel(sourceType, repository, dispatchers, statusListener) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

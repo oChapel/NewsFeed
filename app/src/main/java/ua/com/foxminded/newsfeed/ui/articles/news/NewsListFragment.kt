@@ -1,12 +1,17 @@
 package ua.com.foxminded.newsfeed.ui.articles.news
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
@@ -23,7 +28,8 @@ abstract class NewsListFragment : HostedFragment<
         NewsListContract.Host>(),
     NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
-    protected var binding: FragmentNewsListBinding? = null
+    private var binding: FragmentNewsListBinding? = null
+    private var popupWindow: PopupWindow? = null
     protected val newsAdapter = NewsRecyclerAdapter()
     private val scrollListener: EndlessScrollListener = object : EndlessScrollListener() {
         override fun onLoadMore(page: Int, totalItemCount: Int, view: RecyclerView) {
@@ -47,6 +53,20 @@ abstract class NewsListFragment : HostedFragment<
             addOnScrollListener(scrollListener)
         }
         binding?.newsSwipeRefresh?.setOnRefreshListener(this)
+
+        val popupView = View.inflate(context, R.layout.popup_connection_restored, null)
+        popupView.setOnClickListener {
+            binding?.newsListRecyclerView?.scrollToPosition(0)
+            model?.onPopupClicked()
+            popupWindow?.dismiss()
+        }
+        popupWindow = PopupWindow(
+            popupView,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            animationStyle = android.R.style.Animation_Dialog
+        }
     }
 
     override fun setProgress(isVisible: Boolean) {
@@ -63,9 +83,24 @@ abstract class NewsListFragment : HostedFragment<
         fragmentHost?.showErrorDialog(error)
     }
 
+    override fun showToast(resId: Int) {
+        if (popupWindow?.isShowing == true) {
+            popupWindow?.dismiss()
+        }
+        Toast.makeText(context, resId, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showPopupWindow() {
+        binding?.newsSwipeRefresh?.height?.let {
+            popupWindow?.showAtLocation(
+                binding?.newsSwipeRefresh, Gravity.BOTTOM, 0, it
+            )
+        }
+    }
+
     override fun onRefresh() {
         scrollListener.resetState()
-        model?.loadNews(0)
+        model?.reload()
     }
 
     override fun onDestroyView() {

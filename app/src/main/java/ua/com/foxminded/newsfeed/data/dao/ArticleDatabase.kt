@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.data.dao.util.RoomTypeConverters
 
-@Database(entities = [Article::class], version = 2, exportSchema = false)
+@Database(entities = [Article::class], version = 3, exportSchema = false)
 @TypeConverters(RoomTypeConverters::class)
 abstract class ArticleDatabase : RoomDatabase() {
 

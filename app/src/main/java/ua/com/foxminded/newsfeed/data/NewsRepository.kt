@@ -8,19 +8,23 @@ interface NewsRepository {
 
     suspend fun loadAllNews(page: Int): List<NewsSchema>
 
-    suspend fun getNytNews(page: Int): NewsSchema
+    suspend fun loadNytNews(page: Int): NewsSchema
 
-    suspend fun getCnnNews(page: Int): NewsSchema
+    suspend fun loadCnnNews(page: Int): NewsSchema
 
-    suspend fun getWiredNews(page: Int): NewsSchema
+    suspend fun loadWiredNews(page: Int): NewsSchema
 
     suspend fun saveArticle(article: Article)
 
-    fun getAllArticlesFromDb(): Flow<List<Article>>
+    suspend fun saveNews(list: List<Article>)
 
-    suspend fun existsInDb(guid: String): Boolean
+    suspend fun getAllCachedNews(page: Int): List<Article>
 
-    suspend fun deleteArticleByGuid(guid: String)
+    suspend fun getCachedNewsBySource(page: Int, domain: String): List<Article>
+
+    fun getSavedNews(): Flow<List<Article>>
+
+    suspend fun isBookmarked(guid: String): Boolean
 
     suspend fun deleteArticle(article: Article)
 

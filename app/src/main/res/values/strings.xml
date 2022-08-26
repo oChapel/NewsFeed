@@ -15,6 +15,7 @@
     <!-- NewsListFragment -->
     <string name="menu_item_string_refresh">Refresh</string>
     <string name="news_list_error_screen_text">Some error occurred while loading news</string>
+    <string name="offline_mode">It seems you are currently offline. \n Please restore your internet connection.</string>
 
     <!-- GroupsFragment -->
     <string name="groups_image_desc">source image</string>
@@ -40,6 +41,10 @@
     <string name="news_item_date_icon_desc">date of publication</string>
     <string name="news_item_image_desc">image provided by source</string>
     <string name="news_item_bookmark_desc">image to save article</string>
+
+    <!-- PopupWindow -->
+    <string name="popup_tap_to_update">Tap to update the feed</string>
+    <string name="popup_image_desc">"popup window image</string>
 
     <!-- Toasts -->
     <string name="failed_to_connect_with_db">Some error occurred while processing your request</string>

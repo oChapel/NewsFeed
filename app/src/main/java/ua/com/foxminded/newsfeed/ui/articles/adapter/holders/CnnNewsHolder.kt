@@ -32,7 +32,7 @@ class CnnNewsHolder(
         binding.cnnNewsDescription.text = article.description
         binding.cnnNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
 
-        if (article.isSaved) {
+        if (article.isBookmarked) {
             binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
         } else {
             binding.cnnNewsBookmark.setImageResource(R.drawable.ic_bookmark)

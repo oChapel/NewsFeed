@@ -1,10 +1,14 @@
 package ua.com.foxminded.newsfeed.ui.articles.news
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import ua.com.foxminded.newsfeed.R
 import ua.com.foxminded.newsfeed.data.NewsRepository
 import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
@@ -12,7 +16,8 @@ import ua.com.foxminded.newsfeed.util.dispatchers.DispatchersHolder
 
 abstract class NewsListViewModel(
     protected val repository: NewsRepository,
-    protected val dispatchers: DispatchersHolder
+    protected val dispatchers: DispatchersHolder,
+    private val statusListener: ConnectivityStatusListener
 ) : MviViewModel<
         NewsListContract.View,
         NewsListScreenState,
@@ -20,16 +25,65 @@ abstract class NewsListViewModel(
     NewsListContract.ViewModel {
 
     protected val newsFlow = MutableStateFlow(0)
-    protected val articleFlow = MutableSharedFlow<Article>(extraBufferCapacity = 1)
+    private val articleFlow = MutableSharedFlow<Article>(extraBufferCapacity = 1)
     protected var launch: Job? = null
+    protected var offlineMode = false
 
     abstract fun launchJob()
 
-    override fun loadNews(page: Int) {
-        if (launch?.isCompleted == true) {
-            launchJob()
-        }
+    override fun onStateChanged(event: Lifecycle.Event) {
+        super.onStateChanged(event)
+        if (event == Lifecycle.Event.ON_CREATE && launch == null) {
+            viewModelScope.launch {
+                statusListener.getStatusFlow()
+                    .collect { status ->
+                        when (status) {
+                            ConnectivityStatusListener.STATUS_AVAILABLE -> {
+                                if (offlineMode) {
+                                    setEffect(NewsListScreenEffect.ShowPopupWindow())
+                                }
+                            }
+                            ConnectivityStatusListener.STATUS_UNAVAILABLE -> {
+                                offlineMode = true
+                                setEffect(NewsListScreenEffect.ShowToast(R.string.offline_mode))
+                            }
+                        }
+                    }
+            }
 
+            statusListener.checkIfNetworkAvailable()
+            launchJob()
+
+            viewModelScope.launch {
+                articleFlow
+                    .map { article -> Pair(article, repository.isBookmarked(article.guid)) }
+                    .onEach { pair ->
+                        when (pair.second) {
+                            true -> repository.deleteArticle(pair.first)
+                            false -> {
+                                val article = pair.first.apply { isBookmarked = true }
+                                repository.saveArticle(article)
+                            }
+                        }
+                    }
+                    .flowOn(dispatchers.getIO())
+                    .catch { error -> setEffect(NewsListScreenEffect.ShowError(error)) }
+                    .collect()
+            }
+        }
+    }
+
+    override fun reload() {
+        checkIfJobCompleted()
+        if (newsFlow.value == 0) {
+            newsFlow.tryEmit(-1)
+        } else {
+            newsFlow.tryEmit(0)
+        }
+    }
+
+    override fun loadNews(page: Int) {
+        checkIfJobCompleted()
         if (page == 0 && newsFlow.value == 0) {
             newsFlow.tryEmit(-1)
         } else {
@@ -41,7 +95,19 @@ abstract class NewsListViewModel(
         articleFlow.tryEmit(article)
     }
 
+    override fun onPopupClicked() {
+        offlineMode = false
+        reload()
+    }
+
+    private fun checkIfJobCompleted() {
+        if (launch?.isCompleted == true) {
+            launchJob()
+        }
+    }
+
     override fun onCleared() {
+        statusListener.releaseRequest()
         launch = null
         super.onCleared()
     }

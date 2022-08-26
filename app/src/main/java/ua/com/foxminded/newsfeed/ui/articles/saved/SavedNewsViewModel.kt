@@ -29,10 +29,10 @@ class SavedNewsViewModel(
         super.onStateChanged(event)
         if (event == Lifecycle.Event.ON_CREATE && launch == null) {
             launch = viewModelScope.launch {
-                repository.getAllArticlesFromDb()
+                repository.getSavedNews()
                     .map { list ->
                         return@map if (list.isNotEmpty()) {
-                            list.map { it.copy().apply { isSaved = true } }
+                            list.map { it.copy().apply { isBookmarked = true } }
                                 .sortedByDescending { it.pubDate }
                         } else {
                             ArrayList<EmptyViewItem>().apply { add(EmptyViewItem()) }
@@ -43,7 +43,7 @@ class SavedNewsViewModel(
 
             viewModelScope.launch {
                 articleFlow
-                    .map { article -> Pair(article, repository.existsInDb(article.guid)) }
+                    .map { article -> Pair(article, repository.isBookmarked(article.guid)) }
                     .onEach { pair ->
                         when (pair.second) {
                             false -> repository.saveArticle(pair.first)

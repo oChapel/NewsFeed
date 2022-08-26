@@ -1,11 +1,11 @@
 package ua.com.foxminded.newsfeed.ui.articles.news.feeds
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.data.NewsRepository
 import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
@@ -13,29 +13,9 @@ import ua.com.foxminded.newsfeed.util.dispatchers.DispatchersHolder
 
 class AllFeedsViewModel(
     repository: NewsRepository,
-    dispatchersHolder: DispatchersHolder
-) : NewsListViewModel(repository, dispatchersHolder) {
-
-    override fun onStateChanged(event: Lifecycle.Event) {
-        super.onStateChanged(event)
-        if (event == Lifecycle.Event.ON_CREATE && launch == null) {
-            launchJob()
-
-            viewModelScope.launch {
-                articleFlow
-                    .map { article -> Pair(article, repository.existsInDb(article.guid)) }
-                    .onEach { pair ->
-                        when (pair.second) {
-                            true -> repository.deleteArticleByGuid(pair.first.guid)
-                            false -> repository.saveArticle(pair.first)
-                        }
-                    }
-                    .flowOn(dispatchers.getIO())
-                    .catch { error -> setEffect(NewsListScreenEffect.ShowError(error)) }
-                    .collect()
-            }
-        }
-    }
+    dispatchersHolder: DispatchersHolder,
+    statusListener: ConnectivityStatusListener
+) : NewsListViewModel(repository, dispatchersHolder, statusListener) {
 
     override fun launchJob() {
         launch = viewModelScope.launch {
@@ -44,15 +24,20 @@ class AllFeedsViewModel(
                 .flowOn(dispatchers.getMain())
                 .map { p ->
                     val page = if (p == -1) 0 else p
-                    val list = ArrayList<Article>()
-                    for (response in repository.loadAllNews(page)) {
-                        list.addAll(response.items)
+                    if (!offlineMode) {
+                        val list = ArrayList<Article>()
+                        for (response in repository.loadAllNews(page)) {
+                            list.addAll(response.items)
+                        }
+                        repository.saveNews(list)
+                        return@map list.sortedByDescending { it.pubDate }
+                    } else {
+                        return@map repository.getAllCachedNews(page)
                     }
-                    return@map list.sortedByDescending { it.pubDate }
                 }
-                .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
+                .combine(repository.getSavedNews()) { loadedNews, savedNews ->
                     return@combine loadedNews.map { a ->
-                        a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
+                        a.copy().apply { isBookmarked = savedNews.any { it.guid == a.guid } }
                     }
                 }
                 .flowOn(dispatchers.getIO())

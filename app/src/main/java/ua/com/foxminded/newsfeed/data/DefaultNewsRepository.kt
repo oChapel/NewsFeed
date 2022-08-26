@@ -15,15 +15,15 @@ class DefaultNewsRepository(
         return remoteDataSource.getAllNews(page, NewsRepository.MULTIPLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun getNytNews(page: Int): NewsSchema {
+    override suspend fun loadNytNews(page: Int): NewsSchema {
         return remoteDataSource.getNytNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun getCnnNews(page: Int): NewsSchema {
+    override suspend fun loadCnnNews(page: Int): NewsSchema {
         return remoteDataSource.getCnnNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun getWiredNews(page: Int): NewsSchema {
+    override suspend fun loadWiredNews(page: Int): NewsSchema {
         return remoteDataSource.getWiredNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
@@ -31,16 +31,28 @@ class DefaultNewsRepository(
         localDataSource.insertArticle(article)
     }
 
-    override fun getAllArticlesFromDb(): Flow<List<Article>> {
-        return localDataSource.getAllArticlesFlow()
+    override suspend fun saveNews(list: List<Article>) {
+        localDataSource.insertNews(list)
     }
 
-    override suspend fun existsInDb(guid: String): Boolean {
-        return localDataSource.existsInDb(guid)
+    override suspend fun getAllCachedNews(page: Int): List<Article> {
+        return localDataSource.getAllCachedNews(page, NewsRepository.SINGLE_SOURCE_PAGE_SIZE)
     }
 
-    override suspend fun deleteArticleByGuid(guid: String) {
-        localDataSource.deleteArticleByGuid(guid)
+    override suspend fun getCachedNewsBySource(page: Int, domain: String): List<Article> {
+        return localDataSource.getCachedNewsBySource(
+            page,
+            NewsRepository.SINGLE_SOURCE_PAGE_SIZE,
+            domain
+        )
+    }
+
+    override fun getSavedNews(): Flow<List<Article>> {
+        return localDataSource.getSavedNewsFlow()
+    }
+
+    override suspend fun isBookmarked(guid: String): Boolean {
+        return localDataSource.isBookmarked(guid)
     }
 
     override suspend fun deleteArticle(article: Article) {

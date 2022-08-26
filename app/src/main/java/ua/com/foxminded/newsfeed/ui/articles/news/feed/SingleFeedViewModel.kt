@@ -1,11 +1,11 @@
 package ua.com.foxminded.newsfeed.ui.articles.news.feed
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.data.NewsRepository
 import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
@@ -14,29 +14,9 @@ import ua.com.foxminded.newsfeed.util.dispatchers.DispatchersHolder
 class SingleFeedViewModel(
     private val sourceType: Int,
     repository: NewsRepository,
-    dispatchers: DispatchersHolder
-) : NewsListViewModel(repository, dispatchers) {
-
-    override fun onStateChanged(event: Lifecycle.Event) {
-        super.onStateChanged(event)
-        if (event == Lifecycle.Event.ON_CREATE && launch == null) {
-            launchJob()
-
-            viewModelScope.launch {
-                articleFlow
-                    .map { article -> Pair(article, repository.existsInDb(article.guid)) }
-                    .onEach { pair ->
-                        when (pair.second) {
-                            true -> repository.deleteArticleByGuid(pair.first.guid)
-                            false -> repository.saveArticle(pair.first)
-                        }
-                    }
-                    .flowOn(dispatchers.getIO())
-                    .catch { error -> setEffect(NewsListScreenEffect.ShowError(error)) }
-                    .collect()
-            }
-        }
-    }
+    dispatchers: DispatchersHolder,
+    statusListener: ConnectivityStatusListener
+) : NewsListViewModel(repository, dispatchers, statusListener) {
 
     override fun launchJob() {
         launch = viewModelScope.launch {
@@ -45,17 +25,21 @@ class SingleFeedViewModel(
                 .flowOn(dispatchers.getMain())
                 .map { p ->
                     val page = if (p == -1) 0 else p
-                    val list = ArrayList<Article>()
-                    when (sourceType) {
-                        SourceTypes.NYT_FEED -> list.addAll(repository.getNytNews(page).items)
-                        SourceTypes.CNN_FEED -> list.addAll(repository.getCnnNews(page).items)
-                        SourceTypes.WIRED_FEED -> list.addAll(repository.getWiredNews(page).items)
+                    if (!offlineMode) {
+                        val list = ArrayList<Article>()
+                        when (sourceType) {
+                            SourceTypes.NYT_FEED -> list.addAll(repository.loadNytNews(page).items)
+                            SourceTypes.CNN_FEED -> list.addAll(repository.loadCnnNews(page).items)
+                            SourceTypes.WIRED_FEED -> list.addAll(repository.loadWiredNews(page).items)
+                        }
+                        return@map list
+                    } else {
+                        return@map getCachedNews(page)
                     }
-                    return@map list
                 }
-                .combine(repository.getAllArticlesFromDb()) { loadedNews, savedNews ->
+                .combine(repository.getSavedNews()) { loadedNews, savedNews ->
                     return@combine loadedNews.map { a ->
-                        a.copy().apply { isSaved = savedNews.any { it.guid == a.guid } }
+                        a.copy().apply { isBookmarked = savedNews.any { it.guid == a.guid } }
                     }
                 }
                 .flowOn(dispatchers.getIO())
@@ -64,6 +48,14 @@ class SingleFeedViewModel(
                     setEffect(NewsListScreenEffect.ShowError(error))
                 }
                 .collect { list -> setState(NewsListScreenState.LoadNews(list)) }
+        }
+    }
+
+    private suspend fun getCachedNews(page: Int): List<Article> {
+        return when (sourceType) {
+            SourceTypes.NYT_FEED -> repository.getCachedNewsBySource(page, Article.NYT_DOMAIN)
+            SourceTypes.CNN_FEED -> repository.getCachedNewsBySource(page, Article.CNN_DOMAIN)
+            else -> repository.getCachedNewsBySource(page, Article.WIRED_DOMAIN)
         }
     }
 }

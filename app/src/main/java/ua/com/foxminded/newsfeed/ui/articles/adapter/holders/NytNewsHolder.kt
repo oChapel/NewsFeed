@@ -32,7 +32,7 @@ class NytNewsHolder(
         binding.nytNewsDescription.text = article.description
         binding.nytNewsTimespan.text = Utils.getTimeSpanString(article.pubDate)
 
-        if (article.isSaved) {
+        if (article.isBookmarked) {
             binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark_saved)
         } else {
             binding.nytNewsBookmark.setImageResource(R.drawable.ic_bookmark)
