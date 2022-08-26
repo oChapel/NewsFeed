@@ -84,27 +84,35 @@ abstract class NewsListFragment : HostedFragment<
     }
 
     override fun showToast(resId: Int) {
-        if (popupWindow?.isShowing == true) {
-            popupWindow?.dismiss()
-        }
+        checkIfPopupIsShowing()
         Toast.makeText(context, resId, Toast.LENGTH_LONG).show()
     }
 
     override fun showPopupWindow() {
-        binding?.newsSwipeRefresh?.height?.let {
-            popupWindow?.showAtLocation(
-                binding?.newsSwipeRefresh, Gravity.BOTTOM, 0, it
-            )
+        binding?.newsSwipeRefresh?.let { view ->
+            view.post {
+                popupWindow?.showAtLocation(
+                    binding?.newsSwipeRefresh, Gravity.BOTTOM, 0, view.height
+                )
+            }
         }
     }
 
     override fun onRefresh() {
+        checkIfPopupIsShowing()
         scrollListener.resetState()
         model?.reload()
     }
 
+    private fun checkIfPopupIsShowing() {
+        if (popupWindow?.isShowing == true) {
+            popupWindow?.dismiss()
+        }
+    }
+
     override fun onDestroyView() {
-        super.onDestroyView()
+        checkIfPopupIsShowing()
         binding = null
+        super.onDestroyView()
     }
 }

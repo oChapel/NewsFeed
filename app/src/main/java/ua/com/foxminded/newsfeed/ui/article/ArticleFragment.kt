@@ -39,7 +39,7 @@ class ArticleFragment : Fragment(), View.OnClickListener {
             override fun onReceivedError(
                 view: WebView?, request: WebResourceRequest?, error: WebResourceError?
             ) {
-                if (error?.errorCode != ERROR_UNKNOWN && error?.errorCode != ERROR_HOST_LOOKUP) {
+                if (error?.description != ERR_BLOCKED_BY_RESPONSE) {
                     view?.loadUrl("about:blank")
                     setErrorScreenVisibility(true)
                 }
@@ -106,5 +106,9 @@ class ArticleFragment : Fragment(), View.OnClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    companion object {
+        private const val ERR_BLOCKED_BY_RESPONSE = "net::ERR_BLOCKED_BY_RESPONSE"
     }
 }
