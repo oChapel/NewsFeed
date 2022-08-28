@@ -10,7 +10,7 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticle(article: Article)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertNews(list: List<Article>)
 
     @Query("SELECT * FROM articles ORDER BY pubDate DESC LIMIT :limit")

@@ -24,7 +24,7 @@ class SingleFeedViewModel(
                 .onEach { setState(NewsListScreenState.Loading()) }
                 .flowOn(dispatchers.getMain())
                 .map { p ->
-                    val page = if (p == -1) 0 else p
+                    val page = if (p == PAGE_ZERO) 0 else p
                     if (!offlineMode) {
                         val list = ArrayList<Article>()
                         when (sourceType) {

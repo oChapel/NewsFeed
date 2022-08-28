@@ -76,7 +76,7 @@ abstract class NewsListViewModel(
     override fun reload() {
         checkIfJobCompleted()
         if (newsFlow.value == 0) {
-            newsFlow.tryEmit(-1)
+            newsFlow.tryEmit(PAGE_ZERO)
         } else {
             newsFlow.tryEmit(0)
         }
@@ -85,7 +85,7 @@ abstract class NewsListViewModel(
     override fun loadNews(page: Int) {
         checkIfJobCompleted()
         if (page == 0 && newsFlow.value == 0) {
-            newsFlow.tryEmit(-1)
+            newsFlow.tryEmit(PAGE_ZERO)
         } else {
             newsFlow.tryEmit(page)
         }
@@ -110,5 +110,9 @@ abstract class NewsListViewModel(
         statusListener.releaseRequest()
         launch = null
         super.onCleared()
+    }
+
+    companion object {
+        const val PAGE_ZERO = -1
     }
 }
