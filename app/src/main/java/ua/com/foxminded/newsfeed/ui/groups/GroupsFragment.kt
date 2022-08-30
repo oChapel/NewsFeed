@@ -14,9 +14,7 @@ class GroupsFragment : Fragment(), View.OnClickListener {
     private var binding: FragmentGroupsBinding? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentGroupsBinding.inflate(inflater, container, false)
         return binding?.root

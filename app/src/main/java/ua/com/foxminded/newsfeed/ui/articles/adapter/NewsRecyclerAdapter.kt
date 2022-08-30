@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.data.dto.NewsItem.Companion.CNN_ARTICLE
 import ua.com.foxminded.newsfeed.data.dto.NewsItem.Companion.EMPTY_VIEW
@@ -16,7 +15,7 @@ import ua.com.foxminded.newsfeed.databinding.ItemNytNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
 import ua.com.foxminded.newsfeed.ui.articles.adapter.holders.*
 
-class NewsRecyclerAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback) {
+class NewsRecyclerAdapter : ListAdapter<NewsItem, NewsViewHolder<NewsItem>>(NewsDiffCallback) {
 
     private val clickFlow = MutableSharedFlow<ClickEvent>(extraBufferCapacity = 1)
 
@@ -24,8 +23,8 @@ class NewsRecyclerAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallba
 
     override fun getItemViewType(position: Int): Int = getItem(position).getViewHolderType()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        return when (viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder<NewsItem> {
+        val vh = when (viewType) {
             EMPTY_VIEW -> EmptyViewHolder(
                 ItemEmptyBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
@@ -47,11 +46,10 @@ class NewsRecyclerAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallba
                 ), clickFlow
             )
         }
+        return vh as NewsViewHolder<NewsItem>
     }
 
-    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        if (holder.itemViewType != EMPTY_VIEW) {
-            holder.bind(getItem(position) as Article)
-        }
+    override fun onBindViewHolder(holder: NewsViewHolder<NewsItem>, position: Int) {
+        holder.bind(getItem(position))
     }
 }

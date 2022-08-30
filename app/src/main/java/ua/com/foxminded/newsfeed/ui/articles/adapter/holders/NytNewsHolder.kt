@@ -12,7 +12,7 @@ import ua.com.foxminded.newsfeed.util.Utils
 class NytNewsHolder(
     private val binding: ItemNytNewsBinding,
     private val clickFlow: MutableSharedFlow<ClickEvent>
-) : NewsViewHolder(binding.root), View.OnClickListener {
+) : NewsViewHolder<Article>(binding.root), View.OnClickListener {
 
     private var article: Article? = null
 

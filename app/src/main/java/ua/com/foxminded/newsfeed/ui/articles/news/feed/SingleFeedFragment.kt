@@ -20,8 +20,7 @@ class SingleFeedFragment : NewsListFragment() {
 
     override fun createModel(): NewsListContract.ViewModel {
         return ViewModelProvider(
-            this,
-            NewsViewModelFactory().apply { this.sourceType = args.sourceType }
+            this, NewsViewModelFactory().apply { this.sourceType = args.sourceType }
         )[SingleFeedViewModel::class.java]
     }
 
