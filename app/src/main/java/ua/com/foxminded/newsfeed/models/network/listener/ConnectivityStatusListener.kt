@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.model.network
+package ua.com.foxminded.newsfeed.models.network.listener
 
 import kotlinx.coroutines.flow.Flow
 

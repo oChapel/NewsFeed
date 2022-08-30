@@ -1,8 +1,8 @@
-package ua.com.foxminded.newsfeed.data
+package ua.com.foxminded.newsfeed.models
 
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.NewsSchema
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.dto.NewsSchema
 
 interface NewsRepository {
 

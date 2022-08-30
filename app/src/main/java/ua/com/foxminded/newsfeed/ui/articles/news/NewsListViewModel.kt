@@ -6,9 +6,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
+import ua.com.foxminded.newsfeed.models.NewsRepository
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.network.listener.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
@@ -21,8 +21,7 @@ abstract class NewsListViewModel(
 ) : MviViewModel<
         NewsListContract.View,
         NewsListScreenState,
-        NewsListScreenEffect>(),
-    NewsListContract.ViewModel {
+        NewsListScreenEffect>(), NewsListContract.ViewModel {
 
     protected val newsFlow = MutableStateFlow(0)
     private val articleFlow = MutableSharedFlow<Article>(extraBufferCapacity = 1)

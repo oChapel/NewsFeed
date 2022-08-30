@@ -7,9 +7,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ua.com.foxminded.newsfeed.BuildConfig
-import ua.com.foxminded.newsfeed.data.network.DefaultNewsNetwork
-import ua.com.foxminded.newsfeed.data.network.NewsFeedApi
-import ua.com.foxminded.newsfeed.data.network.NewsNetwork
+import ua.com.foxminded.newsfeed.models.network.DefaultNewsNetwork
+import ua.com.foxminded.newsfeed.models.network.NewsFeedApi
+import ua.com.foxminded.newsfeed.models.network.NewsNetwork
 import javax.inject.Singleton
 
 @Module

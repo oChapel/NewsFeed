@@ -3,10 +3,10 @@ package ua.com.foxminded.newsfeed.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ua.com.foxminded.newsfeed.App
-import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
-import ua.com.foxminded.newsfeed.ui.articles.news.feed.SingleFeedViewModel
+import ua.com.foxminded.newsfeed.models.NewsRepository
+import ua.com.foxminded.newsfeed.models.network.listener.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListViewModel
+import ua.com.foxminded.newsfeed.ui.articles.news.feed.SingleFeedViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.feeds.AllFeedsViewModel
 import ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsViewModel
 import ua.com.foxminded.newsfeed.util.dispatchers.DispatchersHolder

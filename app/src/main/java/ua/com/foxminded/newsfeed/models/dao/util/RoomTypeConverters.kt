@@ -1,7 +1,7 @@
-package ua.com.foxminded.newsfeed.data.dao.util
+package ua.com.foxminded.newsfeed.models.dao.util
 
 import androidx.room.TypeConverter
-import ua.com.foxminded.newsfeed.data.dto.Enclosure
+import ua.com.foxminded.newsfeed.models.dto.Enclosure
 
 class RoomTypeConverters {
 

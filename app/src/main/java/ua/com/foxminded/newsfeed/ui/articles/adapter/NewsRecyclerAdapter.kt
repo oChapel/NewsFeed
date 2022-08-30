@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import ua.com.foxminded.newsfeed.data.dto.NewsItem
-import ua.com.foxminded.newsfeed.data.dto.NewsItem.Companion.CNN_ARTICLE
-import ua.com.foxminded.newsfeed.data.dto.NewsItem.Companion.EMPTY_VIEW
-import ua.com.foxminded.newsfeed.data.dto.NewsItem.Companion.NYT_ARTICLE
 import ua.com.foxminded.newsfeed.databinding.ItemCnnNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemEmptyBinding
 import ua.com.foxminded.newsfeed.databinding.ItemNytNewsBinding
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
+import ua.com.foxminded.newsfeed.models.dto.NewsItem
+import ua.com.foxminded.newsfeed.models.dto.NewsItem.Companion.CNN_ARTICLE
+import ua.com.foxminded.newsfeed.models.dto.NewsItem.Companion.EMPTY_VIEW
+import ua.com.foxminded.newsfeed.models.dto.NewsItem.Companion.NYT_ARTICLE
 import ua.com.foxminded.newsfeed.ui.articles.adapter.holders.*
 
 class NewsRecyclerAdapter : ListAdapter<NewsItem, NewsViewHolder<NewsItem>>(NewsDiffCallback) {

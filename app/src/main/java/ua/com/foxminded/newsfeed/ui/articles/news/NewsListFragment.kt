@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentNewsListBinding
+import ua.com.foxminded.newsfeed.models.dto.NewsItem
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.EndlessScrollListener
 import ua.com.foxminded.newsfeed.ui.articles.adapter.NewsRecyclerAdapter

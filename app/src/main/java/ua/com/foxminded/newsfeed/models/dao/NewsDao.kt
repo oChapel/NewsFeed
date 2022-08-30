@@ -1,7 +1,7 @@
-package ua.com.foxminded.newsfeed.data.dao
+package ua.com.foxminded.newsfeed.models.dao
 
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.dto.Article
+import ua.com.foxminded.newsfeed.models.dto.Article
 
 interface NewsDao {
 

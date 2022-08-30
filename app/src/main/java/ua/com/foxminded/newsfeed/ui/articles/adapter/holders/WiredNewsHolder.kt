@@ -4,8 +4,8 @@ import android.view.View
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.MutableSharedFlow
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.dto.Article
 import ua.com.foxminded.newsfeed.databinding.ItemWiredNewsBinding
+import ua.com.foxminded.newsfeed.models.dto.Article
 import ua.com.foxminded.newsfeed.ui.articles.adapter.ClickEvent
 import ua.com.foxminded.newsfeed.util.Utils
 

@@ -1,10 +1,10 @@
-package ua.com.foxminded.newsfeed.data
+package ua.com.foxminded.newsfeed.models
 
 import kotlinx.coroutines.flow.Flow
-import ua.com.foxminded.newsfeed.data.dao.NewsDao
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.NewsSchema
-import ua.com.foxminded.newsfeed.data.network.NewsNetwork
+import ua.com.foxminded.newsfeed.models.dao.NewsDao
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.dto.NewsSchema
+import ua.com.foxminded.newsfeed.models.network.NewsNetwork
 
 class DefaultNewsRepository(
     private val localDataSource: NewsDao,

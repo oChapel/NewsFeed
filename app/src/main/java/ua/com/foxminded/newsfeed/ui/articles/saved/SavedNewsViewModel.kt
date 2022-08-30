@@ -6,9 +6,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.EmptyViewItem
-import ua.com.foxminded.newsfeed.data.NewsRepository
+import ua.com.foxminded.newsfeed.models.NewsRepository
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.dto.EmptyViewItem
 import ua.com.foxminded.newsfeed.mvi.MviViewModel
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenState

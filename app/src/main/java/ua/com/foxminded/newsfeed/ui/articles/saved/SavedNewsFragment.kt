@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import ua.com.foxminded.newsfeed.R
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.NewsItem
 import ua.com.foxminded.newsfeed.databinding.FragmentSavedNewsBinding
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.dto.NewsItem
 import ua.com.foxminded.newsfeed.mvi.fragments.HostedFragment
 import ua.com.foxminded.newsfeed.ui.NewsViewModelFactory
 import ua.com.foxminded.newsfeed.ui.articles.adapter.ClickEvent

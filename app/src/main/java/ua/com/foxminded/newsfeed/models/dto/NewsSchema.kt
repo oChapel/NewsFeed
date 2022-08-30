@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.data.dto
+package ua.com.foxminded.newsfeed.models.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -52,7 +52,7 @@ data class Article(
         const val WIRED_DOMAIN = "wired.com"
     }
 
-    fun hasImageLink(): Boolean = enclosure.link != ""
+    fun hasImageLink(): Boolean = enclosure.link.isNotEmpty()
 
     override fun getViewHolderType(): Int {
         return when {

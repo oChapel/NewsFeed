@@ -3,11 +3,11 @@ package ua.com.foxminded.newsfeed.di
 import dagger.Module
 import dagger.Provides
 import ua.com.foxminded.newsfeed.App
-import ua.com.foxminded.newsfeed.data.DefaultNewsRepository
-import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.data.dao.NewsDao
-import ua.com.foxminded.newsfeed.data.dao.RoomNewsDao
-import ua.com.foxminded.newsfeed.data.network.NewsNetwork
+import ua.com.foxminded.newsfeed.models.DefaultNewsRepository
+import ua.com.foxminded.newsfeed.models.NewsRepository
+import ua.com.foxminded.newsfeed.models.dao.NewsDao
+import ua.com.foxminded.newsfeed.models.dao.RoomNewsDao
+import ua.com.foxminded.newsfeed.models.network.NewsNetwork
 import javax.inject.Singleton
 
 @Module

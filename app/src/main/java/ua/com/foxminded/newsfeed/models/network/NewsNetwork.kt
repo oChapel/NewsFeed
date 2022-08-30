@@ -1,6 +1,6 @@
-package ua.com.foxminded.newsfeed.data.network
+package ua.com.foxminded.newsfeed.models.network
 
-import ua.com.foxminded.newsfeed.data.dto.NewsSchema
+import ua.com.foxminded.newsfeed.models.dto.NewsSchema
 
 interface NewsNetwork {
 

@@ -3,9 +3,9 @@ package ua.com.foxminded.newsfeed.ui.articles.news.feed
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.com.foxminded.newsfeed.data.NewsRepository
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.model.network.ConnectivityStatusListener
+import ua.com.foxminded.newsfeed.models.NewsRepository
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.network.listener.ConnectivityStatusListener
 import ua.com.foxminded.newsfeed.ui.articles.news.NewsListViewModel
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.news.state.NewsListScreenState
@@ -39,7 +39,7 @@ class SingleFeedViewModel(
                 }
                 .combine(repository.getSavedNews()) { loadedNews, savedNews ->
                     return@combine loadedNews.map { a ->
-                        a.copy().apply { isBookmarked = savedNews.any { it.guid == a.guid } }
+                        a.copy(isBookmarked = savedNews.any { it.guid == a.guid })
                     }
                 }
                 .flowOn(dispatchers.getIO())

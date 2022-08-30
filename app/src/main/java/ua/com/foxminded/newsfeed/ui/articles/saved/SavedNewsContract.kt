@@ -1,7 +1,7 @@
 package ua.com.foxminded.newsfeed.ui.articles.saved
 
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dto.NewsItem
+import ua.com.foxminded.newsfeed.models.dto.Article
+import ua.com.foxminded.newsfeed.models.dto.NewsItem
 import ua.com.foxminded.newsfeed.mvi.fragments.FragmentContract
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenEffect
 import ua.com.foxminded.newsfeed.ui.articles.saved.state.SavedNewsScreenState

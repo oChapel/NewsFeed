@@ -30,7 +30,7 @@
         tools:layout="@layout/fragment_article">
         <argument
             android:name="article"
-            app:argType="ua.com.foxminded.newsfeed.data.dto.Article" />
+            app:argType="ua.com.foxminded.newsfeed.models.dto.Article" />
     </fragment>
 
     <fragment

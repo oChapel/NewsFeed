@@ -1,4 +1,4 @@
-package ua.com.foxminded.newsfeed.data.dto
+package ua.com.foxminded.newsfeed.models.dto
 
 interface NewsItem {
 

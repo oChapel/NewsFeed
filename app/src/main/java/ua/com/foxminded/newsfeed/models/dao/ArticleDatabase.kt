@@ -1,12 +1,12 @@
-package ua.com.foxminded.newsfeed.data.dao
+package ua.com.foxminded.newsfeed.models.dao
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ua.com.foxminded.newsfeed.data.dto.Article
-import ua.com.foxminded.newsfeed.data.dao.util.RoomTypeConverters
+import ua.com.foxminded.newsfeed.models.dao.util.RoomTypeConverters
+import ua.com.foxminded.newsfeed.models.dto.Article
 
 @Database(entities = [Article::class], version = 3, exportSchema = false)
 @TypeConverters(RoomTypeConverters::class)
