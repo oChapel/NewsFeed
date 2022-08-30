@@ -37,7 +37,7 @@ class AllFeedsViewModel(
                 }
                 .combine(repository.getSavedNews()) { loadedNews, savedNews ->
                     return@combine loadedNews.map { a ->
-                        a.copy().apply { isBookmarked = savedNews.any { it.guid == a.guid } }
+                        a.copy(isBookmarked = savedNews.any { it.guid == a.guid })
                     }
                 }
                 .flowOn(dispatchers.getIO())

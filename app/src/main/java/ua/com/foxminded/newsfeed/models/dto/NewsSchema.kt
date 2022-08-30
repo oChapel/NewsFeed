@@ -41,10 +41,10 @@ data class Article(
     val link: String,
     val pubDate: String?,
     val thumbnail: String,
-    val title: String
+    val title: String,
+    val isBookmarked: Boolean = false
 ) : Serializable, NewsItem {
 
-    var isBookmarked: Boolean = false
 
     companion object {
         const val NYT_DOMAIN = "nytimes.com"

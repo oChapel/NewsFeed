@@ -32,8 +32,7 @@ class SavedNewsViewModel(
                 repository.getSavedNews()
                     .map { list ->
                         return@map if (list.isNotEmpty()) {
-                            list.map { it.copy().apply { isBookmarked = true } }
-                                .sortedByDescending { it.pubDate }
+                            list.sortedByDescending { it.pubDate }
                         } else {
                             ArrayList<EmptyViewItem>().apply { add(EmptyViewItem()) }
                         }

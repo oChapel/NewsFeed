@@ -59,10 +59,7 @@ abstract class NewsListViewModel(
                     .onEach { pair ->
                         when (pair.second) {
                             true -> repository.deleteArticle(pair.first)
-                            false -> {
-                                val article = pair.first.apply { isBookmarked = true }
-                                repository.saveArticle(article)
-                            }
+                            false -> repository.saveArticle(pair.first.copy(isBookmarked = true))
                         }
                     }
                     .flowOn(dispatchers.getIO())
