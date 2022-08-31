@@ -39,6 +39,7 @@ abstract class NewsListViewModel(
                         when (status) {
                             ConnectivityStatusListener.STATUS_AVAILABLE -> {
                                 if (offlineMode) {
+                                    offlineMode = false
                                     setEffect(NewsListScreenEffect.ShowPopupWindow())
                                 }
                             }
@@ -92,7 +93,6 @@ abstract class NewsListViewModel(
     }
 
     override fun onPopupClicked() {
-        offlineMode = false
         reload()
     }
 
