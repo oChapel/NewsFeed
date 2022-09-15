@@ -34,7 +34,11 @@ class SingleFeedViewModel(
                         }
                         return@map list
                     } else {
-                        return@map getCachedNews(page)
+                        return@map when (sourceType) {
+                            SourceTypes.NYT_FEED -> repository.getCachedNewsBySource(page, Article.NYT_DOMAIN)
+                            SourceTypes.CNN_FEED -> repository.getCachedNewsBySource(page, Article.CNN_DOMAIN)
+                            else -> repository.getCachedNewsBySource(page, Article.WIRED_DOMAIN)
+                        }
                     }
                 }
                 .combine(repository.getSavedNews()) { loadedNews, savedNews ->
@@ -48,14 +52,6 @@ class SingleFeedViewModel(
                     setEffect(NewsListScreenEffect.ShowError(error))
                 }
                 .collect { list -> setState(NewsListScreenState.LoadNews(list)) }
-        }
-    }
-
-    private suspend fun getCachedNews(page: Int): List<Article> {
-        return when (sourceType) {
-            SourceTypes.NYT_FEED -> repository.getCachedNewsBySource(page, Article.NYT_DOMAIN)
-            SourceTypes.CNN_FEED -> repository.getCachedNewsBySource(page, Article.CNN_DOMAIN)
-            else -> repository.getCachedNewsBySource(page, Article.WIRED_DOMAIN)
         }
     }
 }

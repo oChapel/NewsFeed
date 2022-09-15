@@ -12,12 +12,12 @@ import ua.com.foxminded.newsfeed.util.dispatchers.DispatchersHolderImpl
 class AppModule {
 
     @Provides
-    fun provideDispatchersHolder() : DispatchersHolder {
+    fun provideDispatchersHolder(): DispatchersHolder {
         return DispatchersHolderImpl()
     }
 
     @Provides
-    fun provideConnectivityStatusListener() : ConnectivityStatusListener {
+    fun provideConnectivityStatusListener(): ConnectivityStatusListener {
         return DefaultConnectivityStatusListener(App.instance)
     }
 }
