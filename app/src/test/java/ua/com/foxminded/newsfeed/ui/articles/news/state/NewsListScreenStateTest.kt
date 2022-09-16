@@ -20,12 +20,15 @@ class NewsListScreenStateTest {
 
     @Test
     fun test_LoadingState() {
+        val list = ArrayList<NewsItem>()
+        val prevState = NewsListScreenState.LoadNews(list)
         val state = NewsListScreenState.Loading()
 
+        state.merge(prevState)
         state.visit(view)
 
         verify(view, times(1)).setProgress(true)
-        verify(view, times(1)).showNews(listOf())
+        verify(view, times(1)).showNews(list)
         verifyNoMoreInteractions(view)
     }
 
@@ -43,11 +46,15 @@ class NewsListScreenStateTest {
 
     @Test
     fun test_ErrorState() {
+        val list = ArrayList<NewsItem>()
+        val prevState = NewsListScreenState.LoadNews(list)
         val state = NewsListScreenState.Error()
 
+        state.merge(prevState)
         state.visit(view)
+
         verify(view, times(1)).setProgress(false)
-        verify(view, times(1)).showNews(listOf())
+        verify(view, times(1)).showNews(list)
         verifyNoMoreInteractions(view)
     }
 }
