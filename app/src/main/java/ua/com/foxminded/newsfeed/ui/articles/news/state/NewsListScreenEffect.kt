@@ -7,7 +7,6 @@ sealed class NewsListScreenEffect : AbstractEffect<NewsListContract.View>() {
 
     class ShowError(private val error: Throwable) : NewsListScreenEffect() {
         override fun handle(screen: NewsListContract.View) {
-            screen.setProgress(false)
             screen.showErrorDialog(error)
         }
     }
@@ -18,7 +17,7 @@ sealed class NewsListScreenEffect : AbstractEffect<NewsListContract.View>() {
         }
     }
 
-    class ShowPopupWindow() : NewsListScreenEffect() {
+    class ShowPopupWindow : NewsListScreenEffect() {
         override fun handle(screen: NewsListContract.View) {
             screen.showPopupWindow()
         }
