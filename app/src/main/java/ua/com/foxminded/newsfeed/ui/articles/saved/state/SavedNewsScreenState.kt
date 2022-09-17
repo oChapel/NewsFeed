@@ -6,7 +6,7 @@ import ua.com.foxminded.newsfeed.ui.articles.saved.SavedNewsContract
 
 sealed class SavedNewsScreenState : AbstractState<SavedNewsContract.View, SavedNewsScreenState>() {
 
-    class ShowNews(private val list: List<NewsItem>) : SavedNewsScreenState() {
+    class ShowNews(val list: List<NewsItem>) : SavedNewsScreenState() {
         override fun visit(screen: SavedNewsContract.View) {
             screen.showNews(list)
         }
