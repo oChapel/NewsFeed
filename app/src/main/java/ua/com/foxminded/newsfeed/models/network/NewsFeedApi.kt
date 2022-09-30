@@ -16,7 +16,7 @@ interface NewsFeedApi {
 
     companion object {
         const val NYT_URL = "http://www.nytimes.com/services/xml/rss/nyt/Business.xml"
-        const val CNN_URL = "http://rss.cnn.com/rss/edition.rss"
+        const val CNN_URL = "http://rss.cnn.com/rss/edition_world.rss"
         const val WIRED_URL = "http://www.wired.com/feed/rss"
 
         const val PARAM_PUB_DATE = "pubDate"

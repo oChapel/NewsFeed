@@ -21,7 +21,6 @@ class NewsActivity : AppCompatActivity(), NewsListContract.Host {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.instance.component = DaggerAppComponent.create()
 
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)

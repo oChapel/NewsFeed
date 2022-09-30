@@ -2,6 +2,7 @@ package ua.com.foxminded.newsfeed
 
 import android.app.Application
 import ua.com.foxminded.newsfeed.di.AppComponent
+import ua.com.foxminded.newsfeed.di.DaggerAppComponent
 
 class App : Application() {
 
@@ -10,6 +11,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        component = DaggerAppComponent.create()
     }
 
     companion object {
