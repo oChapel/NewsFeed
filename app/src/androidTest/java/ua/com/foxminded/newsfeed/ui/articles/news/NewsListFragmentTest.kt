@@ -4,9 +4,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
@@ -33,7 +31,7 @@ abstract class NewsListFragmentTest {
 
     lateinit var activityScenario: ActivityScenario<NewsActivity>
     lateinit var navController: NavController
-    lateinit var wifiManager: WifiManager
+    private lateinit var wifiManager: WifiManager
 
     abstract val threadSleepTime: Long
     private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -196,7 +194,11 @@ abstract class NewsListFragmentTest {
 
     private fun performOnBookmarkClick() {
         onView(withId(R.id.news_list_recycler_view))
-            .perform(actionOnItemAtPosition<NewsViewHolder<NewsItem>>(0, CustomViewActions.clickChildViewWithId(R.id.nyt_news_bookmark)))
+            .perform(
+                actionOnItemAtPosition<NewsViewHolder<NewsItem>>(
+                    0, CustomViewActions.clickChildViewWithId(R.id.nyt_news_bookmark)
+                )
+            )
     }
 
     private fun assertCorrectBookmark(isSaved: Boolean) {

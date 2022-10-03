@@ -3,12 +3,20 @@ package ua.com.foxminded.newsfeed.models.dao
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import ua.com.foxminded.newsfeed.models.Mocks
 import ua.com.foxminded.newsfeed.models.dto.Article
 
 class NewsTestDao : NewsDao {
 
     private val db = ArrayList<Article>()
     private val articleFlow = MutableStateFlow<List<Article>>(listOf())
+
+    init {
+        db.add(Mocks.getArticle(Mocks.NYT_TYPE, Mocks.NYT_LINK, 10, true))
+        db.add(Mocks.getArticle(Mocks.CNN_TYPE, Mocks.CNN_LINK, 11, true))
+        db.add(Mocks.getArticle(Mocks.WIRED_TYPE, Mocks.WIRED_LINK, 12, true))
+        articleFlow.tryEmit(getSavedNews())
+    }
 
     override suspend fun insertArticle(article: Article) {
         db.removeIf { it.guid == article.guid }
